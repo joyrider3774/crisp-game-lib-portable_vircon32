@@ -1,0 +1,61 @@
+#include "cglp.h"
+#include "machineDependent.h"
+#include "random.h"
+#include "vector.h"
+#include "math.h"
+#include "misc.h"
+
+struct Particle {
+  Vector pos;
+  Vector vel;
+  int ticks;
+  int colorIndex;
+};
+
+#define MAX_PARTICLE_COUNT 32
+Particle[MAX_PARTICLE_COUNT] particles;
+int particleIndex = 0;
+Random particleRandom;
+
+void initParticle() {
+  setRandomSeedWithTime(&particleRandom);
+  memset(particles, -1, sizeof(particles));
+}
+
+void addParticle(float x, float y, float count, float speed, float angle, float angleWidth) {
+  if (color == TRANSPARENT) {
+    return;
+  }
+  if (count < 1) {
+    if (getRandom(&particleRandom, 0, 1) > count) {
+      return;
+    }
+    count = 1;
+  }
+  for (int i = 0; i < count; i++) {
+    float a = angle + getRandom(&particleRandom, 0, angleWidth) - angleWidth / 2;
+    Particle* p = &particles[particleIndex];
+    vectorSet(&p->pos, x, y);
+    rotate(vectorSet(&p->vel, speed * getRandom(&particleRandom, 0.5, 1), 0), a);
+    p->ticks = clamp(getRandom(&particleRandom, 10, 20) + sqrt(fabs(speed)), 10, 60);
+    p->colorIndex = color;
+    particleIndex++;
+    if (particleIndex >= MAX_PARTICLE_COUNT) {
+      particleIndex = 0;
+    }
+  }
+}
+
+void updateParticles() {
+  for (int i = 0; i < MAX_PARTICLE_COUNT; i++) {
+    Particle* p = &particles[i];
+    if (p->ticks < 0) {
+      continue;
+    }
+    vectorAdd(&p->pos, p->vel.x, p->vel.y);
+    vectorMul(&p->vel, 0.98);
+    ColorRgb* rgb = &colorRgbs[p->colorIndex];
+    md_drawRect(p->pos.x, p->pos.y, 1, 1, rgb->r, rgb->g, rgb->b);
+    p->ticks--;
+  }
+}
