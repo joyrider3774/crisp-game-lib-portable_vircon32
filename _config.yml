@@ -3,3 +3,4 @@ plugins:
     - jekyll-remote-theme
 exclude: 
     - Vendored
+    - VIRCON32_C_DIALECT.md
