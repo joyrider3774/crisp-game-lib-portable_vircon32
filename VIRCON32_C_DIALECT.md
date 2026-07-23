@@ -1,3 +1,7 @@
+---
+render_with_liquid: false
+---
+
 # The Vircon32 C Dialect
 
 A reference for the C language as accepted by the Vircon32 C compiler, written to guide
