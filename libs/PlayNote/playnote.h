@@ -62,8 +62,8 @@
 // begins at sample 0 (a known, consistent point - typically near zero
 // amplitude for a well-formed loop) - so PLAYNOTE_FADE_OUT_FRAMES is the
 // one to raise first if that turns up, back toward 2 or higher.
-#define PLAYNOTE_FADE_IN_FRAMES 1
-#define PLAYNOTE_FADE_OUT_FRAMES 1
+#define PLAYNOTE_FADE_IN_FRAMES 0
+#define PLAYNOTE_FADE_OUT_FRAMES 0
 
 // one per hardware SPU channel (see sound_channels in audio.h)
 #define PLAYNOTE_MAX_VOICES 16

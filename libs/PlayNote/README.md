@@ -106,7 +106,7 @@ nothing here beyond the loop check itself.
 
 ## Constants
 
-- `PLAYNOTE_FADE_IN_FRAMES` / `PLAYNOTE_FADE_OUT_FRAMES` (both default `1`)
+- `PLAYNOTE_FADE_IN_FRAMES` / `PLAYNOTE_FADE_OUT_FRAMES` (both default `0`)
   - how many frames a note's volume takes to ramp in (on start) or out (on
   stop). This is the only thing standing in for an envelope here, so both
   default to the minimum - this library is meant for snappy blips, not
