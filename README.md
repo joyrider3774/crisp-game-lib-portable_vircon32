@@ -56,6 +56,12 @@ whichever one you use first.
   syntax, hardware traps, and a performance model, useful for porting
   other C codebases to this console, not just this one.
 
+## Status
+
+All games run, however certain games may reach 100% cpu usuage and this could cause audio to
+cut or games graphics to flicker because vircon32 emulator is trying to catch up by dropping instructions
+it should however be fine or you can omit playing those games, notable examples are "R Wheel", "Ladder Drop" and "B Blast"
+
 ## License
 
 `LICENSE.txt` (original MIT license, ABA Games / joyrider3774, carried
