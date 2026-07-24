@@ -1136,9 +1136,151 @@ bool replayInput() {
 
 void startReplay() {
   setRandomSeed(&gameRandom, replayRandomSeed);
+  // particleRandom (particle.c) is normally seeded from wall-clock time
+  // (initParticle() -> setRandomSeedWithTime()), which is genuinely
+  // non-deterministic and fine for real gameplay - but initParticle()
+  // only runs once, when the title screen is first entered, not on
+  // every replay loop restart here. Left alone, particleRandom keeps
+  // advancing continuously across every loop of the same replay,
+  // never resetting, so particle spawn behavior (and therefore how
+  // much update/draw work each frame does) differs between consecutive
+  // loops even though the recorded input and gameRandom above are both
+  // identical every time. Reseeding it deterministically here, scoped
+  // only to this replay path, makes the whole loop - not just the core
+  // gameplay logic - reproducible frame for frame.
+  setRandomSeed(&particleRandom, replayRandomSeed);
+  // soundEffectPlayedTimes (sound.c) is a similar case, one level
+  // deeper: playSoundEffect() compares against md_getAudioTime(),
+  // which is get_frame_counter()/FPS - the console's global,
+  // ever-increasing frame count since boot, never reset per game or
+  // per replay loop - to decide whether a given sound-effect request
+  // actually plays or gets silently deduplicated as "too soon after
+  // the last one". That threshold array is only zeroed once, in
+  // initSound() at the start of the whole game session, not on every
+  // loop restart here. Left alone, a threshold value left over from
+  // the previous loop's playback can incorrectly suppress that same
+  // sound type's first occurrence in the next loop, even though the
+  // game logic requesting it is itself fully deterministic - the
+  // audible (and therefore CPU-cost) outcome of that request depends
+  // on how many total frames have elapsed since boot by the time this
+  // particular loop happens to start, which differs every time.
+  // Resetting it here means each loop's dedup state starts fresh, the
+  // same way a brand new game session's would.
+  memset(soundEffectPlayedTimes, 0, sizeof(soundEffectPlayedTimes));
+  // particles[] (particle.c) is the same pattern again: initParticle()
+  // clears it (memset to -1, the "empty slot" sentinel checked by
+  // updateParticles()'s ticks < 0 check) but only runs once, at title-
+  // screen entry, not on every loop restart here. A particle spawned
+  // near the tail end of one loop's playback (e.g. a game-over effect
+  // right as the recorded input runs out) can still be mid-lifetime
+  // (ticks >= 0) the instant the loop restarts, carrying it - and the
+  // update/draw work it costs every frame until it naturally expires -
+  // into the next loop. Worse, this compounds: loop 2 can inherit
+  // leftovers from loop 1, loop 3 from loop 2 (which already included
+  // loop 1's), and so on, until the 32-slot circular buffer fills and
+  // starts overwriting still-active entries. Clearing it here, the same
+  // way initParticle() does, plus resetting particleIndex too (which
+  // initParticle() itself doesn't do, but doesn't need to for its own
+  // one-time case - see below) means every loop starts from the same
+  // clean slate.
+  memset(particles, -1, sizeof(particles));
+  particleIndex = 0;
+  // Same pattern a fourth time, one layer further down the audio stack
+  // than soundEffectPlayedTimes above: md_stopTone() (portVircon32.c)
+  // clears the pending/active tone queues that actually drive audible
+  // playback and hard-stops every SPU channel, but it's normally only
+  // called from disableSound() - when the player turns sound off
+  // entirely - not on a replay loop restart. A sound effect scheduled
+  // (via md_playTone()) near the tail end of one loop's playback, not
+  // yet started or not yet finished by the time the loop restarts, can
+  // carry its playback - and the per-frame cost of
+  // updateSynthTones()/playnote_update() processing it - into the next
+  // loop, the exact same carry-over problem as particles[] above, just
+  // one step later in the pipeline (soundEffectPlayedTimes controls
+  // whether a tone gets *scheduled* at all; this controls what happens
+  // to one that already was).
+  md_stopTone();
+  // score (this file) is modified during replay too, not just real
+  // gameplay: Paku Paku's own update logic (score += pakupakuMultiplier,
+  // addScore()) runs via the same currentUpdate() call updateTitle()
+  // uses for replay playback, and score was only ever reset in
+  // initInGame(), never here. The title screen's own score display
+  // shows prevScore, not this live value, so it isn't necessarily
+  // visible - but the underlying number still grows unbounded across
+  // successive loops regardless, and any other game logic that reads
+  // score directly (rather than just accumulating into it) would see a
+  // different, wrong value on loop 2 than it saw on loop 1. Reset here
+  // for the same reason as everything else in this function: every
+  // loop should start from an identical state, not just the parts that
+  // happen to be visible.
+  score = 0;
+  // input (this file) is the most consequential of these: updateButtons()
+  // computes isJustPressed as isPressed && !previousIsPressed - it reads
+  // the button state left over from whatever the *last* call to it set,
+  // per button and overall. replayInput() writes into input (not
+  // currentInput - that's the live gamepad, untouched by any of this),
+  // via updateButtons(&input, ...), and games read directly from input
+  // (see e.g. gamePakuPaku.c's input.left.isJustPressed). initInput()
+  // already exists to clear this exact state, but it's only ever called
+  // once, from initGame() at console boot - never again, not on every
+  // game selection, not on every replay loop restart here. Left alone,
+  // the very first frame of a new loop computes isJustPressed by
+  // comparing the loop's first recorded button state against whatever
+  // input.left.isPressed (etc.) happened to be at the *end* of the
+  // previous loop's playback, not a genuine fresh start - so if, say,
+  // the previous loop ended with a direction held down and the new
+  // loop's first frame also has it held, isJustPressed incorrectly
+  // reads false (since isPressed was already true), where a true fresh
+  // start would have correctly read true. Unlike the other resets in
+  // this function, this one isn't just additive cost carried over - a
+  // wrong isJustPressed on frame one can flip a direction, a menu
+  // selection, anything a game's own logic branches on, and cascade
+  // into a genuinely different playthrough for the rest of that loop.
+  // initInput() itself only clears the six per-button sub-structs
+  // (left/right/up/down/b/a), not input's own top-level isPressed/
+  // isJustPressed/isJustReleased - harmless for its own one-time,
+  // already-zero-initialized case at boot, but those top-level flags do
+  // carry real state forward once the game has actually been running,
+  // so they're cleared explicitly here too rather than just calling
+  // initInput() and assuming it's sufficient. input.pos isn't included -
+  // replayInput() unconditionally overwrites it from the recorded data
+  // every single call, so it never needs a separate reset.
+  clearButtonState(&input.left);
+  clearButtonState(&input.right);
+  clearButtonState(&input.up);
+  clearButtonState(&input.down);
+  clearButtonState(&input.b);
+  clearButtonState(&input.a);
+  input.isPressed = false;
+  input.isJustPressed = false;
+  input.isJustReleased = false;
+  // characterPatternOrder/characterPatternsCount (this file) is a
+  // smaller, subtler case than the others above: it's the move-to-front
+  // cache drawCharacter() uses to avoid recomputing a character's pixel
+  // pattern it's already seen. Unlike everything else in this function,
+  // its state doesn't affect what actually gets drawn - a cache miss
+  // just means recomputing the same pattern, not a different one - so
+  // it can't cause a gameplay-level divergence the way input above can.
+  // But it does affect how many cache hits vs misses happen, and
+  // therefore cycle cost, and it's only ever reset by initCharacter(),
+  // called once from resetGame() at game-session start, never on a
+  // replay loop restart. Left alone, each new loop's first few frames
+  // are querying a cache still ordered by whatever the previous loop's
+  // tail happened to access most recently, not the fresh, empty state a
+  // real "first ever draw" would see - a smaller effect than input's,
+  // since the cache re-converges to the loop's own deterministic access
+  // pattern within a few frames regardless, but still not a genuine
+  // fresh start. Reset the same way initCharacter() does.
+  characterPatternsCount = 0;
+  for (int i = 0; i < MAX_CACHED_CHARACTER_PATTERN_COUNT; i++) {
+    characterPatternOrder[i] = i;
+  }
   recordedInputIndex = 0;
   isReplaying = true;
   replayInput();
+#ifdef DEBUG_MODE
+  md_onReplayStart();
+#endif
 }
 
 void stopReplay() { isReplaying = false; }

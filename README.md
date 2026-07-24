@@ -1,5 +1,4 @@
 # crisp-game-lib-portable for Vircon32
-![DownloadCountTotal](https://img.shields.io/github/downloads/joyrider3774/crisp-game-lib-portable_vircon32/total?label=total%20downloads&style=plastic) ![DownloadCountLatest](https://img.shields.io/github/downloads/joyrider3774/crisp-game-lib-portable_vircon32/latest/total?style=plastic) ![LatestVersion](https://img.shields.io/github/v/tag/joyrider3774/crisp-game-lib-portable_vircon32?label=Latest%20version&style=plastic) ![License](https://img.shields.io/github/license/joyrider3774/crisp-game-lib-portable_vircon32?style=plastic)
 
 A port of all 42 games from [crisp-game-lib](https://github.com/abagames/crisp-game-lib)
 to the [Vircon32](https://www.vircon32.com/) fantasy console.
@@ -22,6 +21,19 @@ to the [Vircon32](https://www.vircon32.com/) fantasy console.
 This port - the engine adaptation, the Vircon32-specific audio/video
 backend, the performance work, and this documentation - was built with
 the help of [Claude](https://www.anthropic.com/claude) (Anthropic).
+
+## Status
+
+All 42 games from the original menu are ported and registered in the
+built ROM. Everything here was actually compiled, assembled, and packed
+into a real `.v32` ROM with the genuine Vircon32 toolchain (`compile`/
+`assemble`/`packrom`) - not just written against the dialect spec by
+hand. It has **not** been run in the emulator yet (no GPU/display in the
+environment this was built in) - please test in `Vircon32.exe` (or the
+libretro core) and report back. With 42 games and thousands of ported
+call sites, some gameplay-level issues are likely still lurking even
+though everything compiles clean and the packed ROM round-trips through
+`unpackrom`.
 
 ## Controls
 

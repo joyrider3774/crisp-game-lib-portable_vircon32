@@ -22,7 +22,7 @@
 // Press Y to reset the max-cycles/min-FPS/cache-count tracking back to
 // a fresh baseline. Fully compiled out (zero cost, zero code) when this
 // isn't defined - every use of it below is behind #ifdef DEBUG_MODE.
-// #define DEBUG_MODE
+#define DEBUG_MODE
 
 #ifdef DEBUG_MODE
 // Incremented in drawCharacter() (cglp.c) - defined there, not here,
@@ -55,5 +55,16 @@ void md_stopTone();
 float md_getAudioTime();
 void md_initView(int w, int h);
 void md_consoleLog(int* msg);
+// Called from startReplay() (cglp.c) - the actual boundary between
+// "whatever came before" (the title screen, or the previous replay
+// loop finishing) and "this specific replay loop's gameplay" starting.
+// A recorded replay loops continuously while shown on the title screen
+// (see updateTitle() in cglp.c) by calling startReplay() again the
+// moment its recorded input runs out - resetting specifically here, at
+// the one function actually called at every replay (re)start, keeps
+// each loop's measurement window aligned the same way every time,
+// which is what makes it meaningful to compare between loops of the
+// exact same, fully deterministic replay.
+void md_onReplayStart();
 
 #endif

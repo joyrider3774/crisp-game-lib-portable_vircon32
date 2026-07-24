@@ -139,6 +139,80 @@ visible cursor sprite drawn, matching the original mouse-driven games,
 which are driven by `input.pos`/`input.isPressed` directly rather than a
 rendered pointer.
 
+## v32opt - integrated, using only individually-verified-safe passes
+
+[v32opt](https://github.com/wedge1020/v32opt) is a third-party,
+optional post-compile Vircon32 assembly optimizer (not part of the
+official toolchain). `Make.sh`/`Make.bat` run it - if it's found on
+`PATH` - between `compile` and `assemble`, using six of its nine passes
+individually. Skipped automatically if it's not installed, or if
+`SKIP_V32OPT=1` is set (`SKIP_V32OPT=1 ./Make.sh`, or `set
+SKIP_V32OPT=1` before `Make.bat`) - either way the build falls back to
+the unoptimized assembly from `compile`, same as if this step didn't
+exist. Nothing else in the build depends on it.
+
+**Deliberately not using `-O1`/`-O2`/`-O3` at all** - every preset
+level bundles at least one pass with a confirmed correctness bug, found
+by building v32opt from source and testing it against this project's
+own real compiled output, not just reading its documentation:
+
+- **`-fopt_inline`** (also pulled in by `-O3`) - an inlined function
+  body keeps its original parameter references (`[BP+2]`-style stack-
+  frame offsets) unchanged, but those offsets were only valid relative
+  to the callee's *own* prologue-established `BP`. Once the body is
+  copied into the caller with no new prologue, `BP` still points at the
+  caller's frame, so the inlined code reads whatever happens to occupy
+  that unrelated offset in the caller's own stack instead of the
+  argument actually passed in. Traced two independent call sites (one
+  passing a local variable, one a global) through the transformation -
+  both showed the identical wrong pattern, not a one-off.
+- **`-fopt_strength_reduction`** (pulled in by `-O1` and up) - emits a
+  bare `SHR` mnemonic. Vircon32 doesn't have a right-shift instruction
+  (only `SHL` is real, confirmed against `VIRCON32_C_DIALECT.md`'s own
+  hardware instruction table) - the real assembler rejects it outright
+  with a parser error. This "optimization" would also be pointless even
+  if it worked: `IDIV` is already 1 cycle on this hardware (see §16.3),
+  identical cost to a shift.
+- **`-fopt_dce`** (pulled in by `-O2` and up) - a false positive in its
+  reachability analysis deleted `select_texture`, a function this
+  project genuinely calls, and the assembler then failed with "label
+  was not declared."
+- **`-fopt_constant_folding`** (pulled in by `-O2` and up) - the most
+  dangerous of the four, since it produces no error at all. Its
+  cross-block constant tracking leaks across function boundaries and
+  function calls: traced one transformed site and found `mov R1, R0`,
+  sitting at the very start of a freshly-entered function immediately
+  after that function's own first `call` (to `pow()`, mid-formula in a
+  MIDI-note-to-frequency conversion), had been folded to a hardcoded
+  `MOV R1, 0x0`. R0 holds `pow()`'s real return value there - nothing
+  in that function's own code ever set it to 0. The tool silently
+  replaces a real computed value with a stale, unrelated constant left
+  over from somewhere else entirely. Compiles and assembles fine either
+  way; only tracing the actual instructions catches it.
+
+**What's actually enabled** - `-fopt_peephole`, `-fopt_algebraic`,
+`-fopt_forwarding`, `-fopt_jump_next`, `-fopt_redundant_movs`,
+`-fopt_combine_immediates`, passed individually. Algebraic, forwarding,
+and combine_immediates were each verified the same way as the broken
+ones above - run against real compiled output, then a specific
+transformed call site traced by hand and confirmed mathematically
+correct (`IMUL R,2` → `IADD R,R`; a redundant post-store memory read
+forwarded to the register that was just written; two adjacent
+`IADD`/`ISUB` immediates merged into one). Peephole, jump_next, and
+redundant_movs didn't happen to trigger on this project's own compiled
+output, so they're unverified by tracing specifically - but they're
+simple, local, single-pattern passes, structurally unlike any of the
+four broken ones (none of them move code across a function boundary or
+track state across blocks, which is where all four confirmed bugs
+live).
+
+If revisiting this later (e.g. after an upstream fix to one of the
+broken passes), the same discipline applies: build v32opt from source,
+run it against a real compile, and trace actual transformed call sites
+by hand rather than trusting that a clean compile/assemble/pack means
+the output is correct - three of these four bugs produced no error
+anywhere in the toolchain and would have shipped silently.
+
 ## Collision detection
 
 `checkHitBox()` (in `cglp.c`) is the core of every collision check in
@@ -184,6 +258,195 @@ across random, boundary-aligned, multi-cell-spanning, and forced-overflow
 scenarios with zero mismatches, and measured at roughly 60x fewer
 geometry comparisons for a realistic busy frame in that same harness.
 
+## Replay determinism (particleRandom, soundEffectPlayedTimes, particles[], tone queues, score, input, character-pattern cache)
+
+`startReplay()` (`cglp.c`) resets `gameRandom` to a fixed, recorded seed
+every time a replay (re)starts, making the game's own logic - the part
+that actually matters for reproducing a recorded high-score run -
+correctly deterministic across every loop. Seven other pieces of state
+don't get the same treatment by default, and all seven were found the
+same way: by actually running the replay repeatedly and noticing the
+debug overlay's `AVG`/`PREV` cycle counts (see below) didn't match
+between loops of what should have been the exact same, fully
+deterministic playback - isolating candidates one at a time (e.g.
+setting `isSoundEnabled = false`, and separately hard-coding
+`setRandomSeedWithTime()` to always return a fixed seed, to rule
+sound and wall-clock-seeded randomness in or out entirely), then, once
+isolating individual candidates stopped turning up new ones, a
+systematic sweep of every global variable both `cglp.c` and the game
+being tested with (`gamePakuPaku.c`) declare, cross-referenced against
+what `startReplay()` actually resets - rather than continuing to guess
+one candidate at a time indefinitely.
+
+**`particleRandom`** (`particle.c`) is normally seeded from wall-clock
+time (`initParticle()` -> `setRandomSeedWithTime()`), which is fine for
+real gameplay - particles looking a little different each time you
+play is desirable, not a bug - but `initParticle()` only runs once,
+when the title screen is first *entered*, not on every replay loop
+restart. Left alone, that means `particleRandom` keeps advancing
+continuously across every loop of the same replay, never resetting, so
+particle spawn behavior - and therefore how much update/draw work each
+frame actually does - differs between consecutive loops even though
+the recorded input and `gameRandom` are both identical every time.
+
+**`soundEffectPlayedTimes`** (`sound.c`) is a related case one level
+deeper. `playSoundEffect()` compares against `md_getAudioTime()` -
+`get_frame_counter()/FPS`, the console's global, ever-increasing frame
+count since boot, never reset per game or per replay loop - to decide
+whether a given sound-effect request actually plays or gets silently
+deduplicated as "too soon after the last one of this type". That
+threshold array is only zeroed once, in `initSound()` at the start of
+the whole game session, not on every loop restart. Left alone, a
+threshold value carried over from the previous loop's playback can
+incorrectly suppress that same sound type's first occurrence in the
+next loop - the *game logic* requesting a sound effect is fully
+deterministic (same ticks, same input), but whether that request
+actually results in an audible sound (and the `md_playTone()` work that
+goes with it) depends on how many total frames have elapsed since boot
+by the time this particular loop happens to start, which differs every
+time.
+
+**`particles[]`** (`particle.c`) is the same pattern again, and was
+found once the other two were already fixed and the discrepancy
+persisted (confirmed sound wasn't the (remaining) cause at that point
+by setting `isSoundEnabled = false` and observing the inconsistency
+didn't go away). `initParticle()` clears the array (`memset` to -1, the
+"empty slot" sentinel `updateParticles()`'s own `ticks < 0` check looks
+for), but again, only once, at title-screen entry, not on every loop
+restart. A particle spawned near the tail end of one loop's playback -
+a game-over effect right as the recorded input runs out, for instance
+- can still be mid-lifetime (`ticks >= 0`) the instant the loop
+restarts, carrying it, and the update/draw work it costs every frame
+until it naturally expires, into the next loop. Worse, this compounds
+across successive loops: loop 2 can inherit leftovers from loop 1,
+loop 3 from loop 2 (which already included loop 1's), and so on, until
+the 32-slot circular buffer (`MAX_PARTICLE_COUNT`) fills and starts
+overwriting still-active entries.
+
+**Tone queues** (`portVircon32.c`) are one layer further down the
+audio stack than `soundEffectPlayedTimes` above, and were found after
+that fix and the `particles[]` fix both still weren't enough - this
+time isolated by hard-coding `setRandomSeedWithTime()` (`random.c`) to
+always return a fixed seed instead of `get_time() ^
+get_cycle_counter()`, which rules out *every* wall-clock-seeded random
+source at once (not just `particleRandom` specifically) and the
+inconsistency still didn't go away, pointing at something with no
+random component at all. `md_stopTone()` already existed and already
+clears exactly the right state - the pending/active tone queues that
+drive actual audible playback, plus a hard stop on every SPU channel -
+but it's normally only called from `disableSound()`, when the player
+turns sound off entirely, not on a replay loop restart. A sound effect
+scheduled (via `md_playTone()`) near the tail end of one loop's
+playback, not yet started or not yet finished by the time the loop
+restarts, carries its playback - and the per-frame cost of
+`updateSynthTones()`/`playnote_update()` processing it - into the next
+loop: the same carry-over problem as `particles[]`, one step later in
+the pipeline (`soundEffectPlayedTimes` controls whether a tone gets
+*scheduled* at all; this controls what happens to one that already
+was).
+
+**`score`** (`cglp.c`) was found the same way, after the tone-queue fix
+still wasn't enough: a systematic sweep of every global `cglp.c`
+declares, cross-referenced against what `startReplay()` actually
+resets, rather than continuing to guess one candidate at a time.
+Paku Paku's own update logic (`score += pakupakuMultiplier`,
+`addScore()`) modifies it during replay too, via the same
+`currentUpdate()` call `updateTitle()` uses for playback - and `score`
+was only ever reset in `initInGame()`, never here. The title screen's
+own score display shows `prevScore`, not this live value, so the
+growth isn't necessarily visible on screen - but the underlying number
+still grows unbounded across successive loops regardless, and any
+other game logic reading `score` directly (rather than just
+accumulating into it) would see a different, wrong value on loop 2
+than it saw on loop 1.
+
+**`input`** (`cglp.c`) is the most consequential of the six, found in
+that same sweep. `updateButtons()` computes `isJustPressed` as
+`isPressed && !previousIsPressed` - it reads the button state left
+over from whatever the *last* call to it set, per button and overall.
+`replayInput()` writes into `input` (not `currentInput` - that's the
+live gamepad, untouched by any of this) via `updateButtons(&input,
+...)`, and games read directly from `input` (e.g.
+`gamePakuPaku.c`'s `input.left.isJustPressed`). `initInput()` already
+exists to clear this exact state, but it's only ever called once, from
+`initGame()` at console boot - never again, not on every game
+selection, not on every replay loop restart. Left alone, the very
+first frame of a new loop computes `isJustPressed` by comparing the
+loop's first recorded button state against whatever
+`input.left.isPressed` (etc.) happened to be at the *end* of the
+previous loop's playback, not a genuine fresh start - so if the
+previous loop ended with a direction held down and the new loop's
+first frame also has it held, `isJustPressed` incorrectly reads
+`false` (since `isPressed` was already `true`), where a true fresh
+start would have correctly read `true`. Unlike the other five fixes
+here, this one isn't just additive cost carried forward - a wrong
+`isJustPressed` on frame one can flip a direction, a menu selection,
+anything a game's own logic branches on, and cascade into a genuinely
+different playthrough for the rest of that loop, not just a
+different cycle count for an otherwise-identical one. `initInput()`
+itself only clears the six per-button sub-structs
+(left/right/up/down/b/a), not `input`'s own top-level
+`isPressed`/`isJustPressed`/`isJustReleased` - harmless for its own
+one-time, already-zero-initialized case at boot, but those top-level
+flags do carry real state forward once the game has actually been
+running, so they're cleared explicitly here too rather than just
+calling `initInput()` and assuming it's sufficient. `input.pos` isn't
+included in the reset - `replayInput()` unconditionally overwrites it
+from the recorded data every single call, so it never needs one.
+
+**Character-pattern cache** (`characterPatternOrder`/`characterPatternsCount`,
+`cglp.c`) is a smaller, subtler case than the other six, found in the
+same systematic sweep as `score`/`input` above. It's the move-to-front
+cache `drawCharacter()` uses to avoid recomputing a character's pixel
+pattern it's already seen. Unlike everything else in this section, its
+state doesn't affect what actually gets drawn - a cache miss just
+means recomputing the same pattern, not a different one - so it can't
+cause a gameplay-level divergence the way `input` above can. But it
+does affect how many cache hits vs misses happen, and therefore cycle
+cost, and it's only ever reset by `initCharacter()`, called once from
+`resetGame()` at game-session start, never on a replay loop restart.
+Left alone, each new loop's first few frames are querying a cache
+still ordered by whatever the previous loop's tail happened to access
+most recently, not the fresh, empty state a real "first ever draw"
+would see - a smaller effect than `input`'s, since the cache
+re-converges to the loop's own deterministic access pattern within a
+few frames regardless, but still not a genuine fresh start.
+
+All seven fixed the same way: reset inside `startReplay()` itself,
+scoped only to the replay path, so real gameplay is untouched -
+`particleRandom` reseeded with the same recorded seed as `gameRandom`,
+`soundEffectPlayedTimes` zeroed the same way `initSound()` does for a
+brand new session, `particles[]` cleared the same way `initParticle()`
+does (plus resetting `particleIndex`, which `initParticle()` itself
+doesn't bother with - fine for its own one-time-at-title-screen case,
+but worth doing properly here since every loop needs to start from an
+identical state), the tone queues cleared by calling the
+already-existing `md_stopTone()`, `score` zeroed directly, `input`'s
+button state cleared more thoroughly than `initInput()` itself bothers
+with, and the character-pattern cache reset the same way
+`initCharacter()` does. None of the seven are gated behind
+`DEBUG_MODE`: all are real determinism fixes to the replay system
+itself, independent of whether the debug overlay is being used to
+observe them.
+
+**Not fixed, and worth knowing about**: even with all three resets,
+`md_getAudioTime()`'s absolute value at the *start* of each loop still
+differs (since the global frame counter never resets), which shifts
+the phase of `playSoundEffect()`'s own quantization
+(`ceil(ct / QUANTIZED_DURATION) * QUANTIZED_DURATION`) relative to
+each loop's own timeline. In principle this could still cause small,
+loop-to-loop differences in exactly when a sound effect's dedup window
+closes, later in a loop's playback - a smaller, subtler version of the
+same underlying problem. Not fixed here: `md_getAudioTime()` is also
+the clock actual tone scheduling depends on (`playnote_update()`'s
+pending/active tone queues), and the comment on its own definition
+notes it "must be non-decreasing and track real time" - changing how
+it behaves risks breaking real audio playback correctness for the sake
+of a debug-only measurement, which isn't a trade worth making
+casually. If this residual variance turns out to matter in practice,
+it needs a more careful look at the sound-scheduling system
+specifically, not a quick patch here.
+
 ## Debug mode
 
 Uncomment `#define DEBUG_MODE` near the top of `src/machineDependent.h`
@@ -193,6 +456,8 @@ every game:
 ```
 OBJ 87/412
 CYC 4213/9871
+AVG 5023
+PREV 4890/5230
 FPS 60/47
 CACHE 812/23
 ```
@@ -206,9 +471,41 @@ CACHE 812/23
   differently-named arrays per game, with no single variable that means
   the same thing across all 42 the way this engine-level count does.
 - **CYC** - `get_cycle_counter()`'s reading for the current frame, and
-  the highest seen since the last reset. Vircon32's own docs note
-  emulators make no timing guarantees for cycles *within* a frame, so
-  treat this as a relative "is this getting worse" signal.
+  the highest seen since the last reset.
+- **AVG** - running average of cycles-per-frame since the last reset,
+  on its own line below CYC. Resets on Y press, and automatically at
+  the start of every replay loop, via a dedicated `md_onReplayStart()`
+  hook called from `startReplay()` (`cglp.c`) - the one function
+  actually called at every replay (re)start, both the very first time
+  and every subsequent loop restart once the recorded input runs out
+  (see `updateTitle()` in `cglp.c`). Deliberately scoped to replay
+  playback only, not real player gameplay: earlier versions of this
+  feature also reset on real gameplay starting/ending (via
+  `md_initView()`, then later dedicated `md_onGameplayStart()`/
+  `md_onGameOver()` hooks), but this measurement is meant purely for
+  tracing the replay loop's own performance - a fully deterministic,
+  no-input-needed benchmark - so those were removed rather than left
+  as unused complexity. Unlike the other three metrics (OBJ/CYC max,
+  FPS min, CACHE), which only reset on Y, AVG resets on both.
+- **PREV** - current/max, like OBJ and CYC above. Current is whatever
+  AVG was reading right before its most recent reset - lets one replay
+  loop's average stay visible for comparison after the next loop has
+  already started accumulating its own. Resets via the same
+  `md_onReplayStart()` hook and Y press as AVG. Max is the highest
+  that current value has reached, but - unlike every other "max" this
+  overlay tracks, and unlike PREV's own current value right next to it
+  - resets *only* on Y, never on a replay loop restart, so a single
+  unusually expensive loop stays visible even after several cheaper
+  loops have since replaced it as PREV's current value.
+
+Both AVG and PREV are computed/updated the same way: an incremental
+running mean (`avg += (new - avg) / count`) rather than a running sum
+divided by frame count - a plain sum risks overflowing a 32-bit int
+over a long enough session at up to ~250,000 cycles/frame, where the
+incremental form never accumulates a large value regardless of session
+length. Vircon32's own docs note emulators make no timing guarantees
+for cycles *within* a frame, so treat all of CYC/AVG/PREV as a relative
+"is this getting worse" signal.
 - **FPS** - actual instantaneous frame rate, measured by comparing
   `get_frame_counter()` immediately before/after each `end_frame()`
   wait, so it reflects a real missed vsync rather than an assumed
@@ -227,6 +524,73 @@ its own background every frame, since `print_at()` bypasses
 
 Fully compiled out (zero cost, zero code) when `DEBUG_MODE` isn't
 defined - every part of it is behind `#ifdef DEBUG_MODE`.
+
+### Stats recording mode
+
+Also gated behind `DEBUG_MODE`. Press X anywhere to start an
+unattended benchmark run: it steps through every game in turn,
+auto-plays each one just long enough to record a replay, measures that
+replay's own `PREV` max over a fixed number of loops, records the
+result, and moves to the next game - ending in a results screen
+listing every game's number, meant to be screenshotted and OCR'd or
+transcribed into a spreadsheet.
+
+Per game, in order:
+
+1. **Select and enter the game.** `restartGame()` always clears any
+   previous replay first (`initReplay()`, inside `resetGame()`), so a
+   `hasTitle` game lands on a replay-less title screen - this calls
+   `initInGame()` directly rather than waiting for a synthetic press to
+   do it a frame later, one less state transition to reason about.
+2. **Auto-play.** While `state == STATE_IN_GAME`, a synthetic A press
+   fires once every `STATS_A_PRESS_INTERVAL_FRAMES` frames (default 60
+   - `#define`d in `portVircon32.c`, next to the other stats-recording
+   constants). Deliberately A-only, matching how these games were
+   asked to be driven - no directional input is simulated, so the 8
+   mouse-driven games in particular may take a while (or hit the
+   timeout below) rather than progressing quickly. If the game hasn't
+   reached a game over within `STATS_IN_GAME_TIMEOUT_FRAMES` (default
+   3600, one full minute of real gameplay time), this forces one
+   directly rather than let a single unusually-durable game hang the
+   whole unattended run - whatever got recorded up to that point is
+   still a real, fully deterministic sequence, just not one that ends
+   in a natural death, which is fine for this mode's purposes.
+3. **Game over.** The real ~2-second game-over-screen timeout
+   (`updateGameOver()` in `cglp.c`) is skipped by calling `initTitle()`
+   directly the moment `state == STATE_GAME_OVER` is seen - nothing
+   about that wait is part of what's being measured, so there's no
+   reason to actually sit through it once per game.
+4. **Replay starts.** `isReplayRecorded` is now true, so `initTitle()`
+   starts the replay that was just auto-played. This is loop 1.
+5. **On loop 2 starting**, the Y button's reset is performed directly
+   (there's no real Y press to synthesize a frame in advance of, so
+   this calls the same reset logic Y's own handler does, rather than
+   trying to fake a button press that would only be read a frame
+   later anyway) - clearing out whatever the first loop measured, so
+   what gets recorded reflects loops that ran under identical,
+   already-reset conditions throughout.
+6. **10 more loops run** (`STATS_REPLAY_LOOPS_TO_MEASURE`), counted
+   from the reset in step 5, not from game over - "10 more" means 10
+   loops after that reset, not 10 minus the 2 it took to get there.
+7. **Record and advance.** `debugMaxPrevAvgCycles` - now reflecting the
+   max across exactly those 10 loops - is stored into
+   `statsResults[gameIndex]`, and the whole sequence repeats for the
+   next game.
+
+All of the counting, resetting, and recording for steps 4-7 happens
+inside `md_onReplayStart()` (see its own comment), triggered
+automatically as each loop (re)starts - `updateStatsRecording()` (the
+function driving steps 1-3) doesn't need to know anything about replay
+loops itself, only about get into a game and drive its own gameplay.
+
+Once every game (`gameCount - 1`, skipping the menu at index 0) has a
+recorded result, the results screen replaces normal rendering entirely
+- white background, black BIOS-font text, three columns of `N: value`
+lines, sized to comfortably fit even the largest possible game count
+(`MAX_GAME_COUNT - 1`, 48) within the screen's height. Chosen
+specifically for OCR: a plain screenshot should be enough to run
+through OCR cleanly, rather than needing to fight the low-res in-game
+font or a colored background first.
 
 ## Porting an additional game into this project
 

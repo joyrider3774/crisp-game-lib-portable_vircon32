@@ -80,5 +80,6 @@ void setRandomSeed(Random* random, int w) {
 void setRandomSeedWithTime(Random* random) {
   // Vircon32 has no wall-clock time(NULL); combine the calendar time with
   // the free-running cycle counter so seeds differ between runs/frames.
-  setRandomSeed(random, get_time() ^ get_cycle_counter());
+  //setRandomSeed(random, get_time() ^ get_cycle_counter());
+  setRandomSeed(random, 0);
 }

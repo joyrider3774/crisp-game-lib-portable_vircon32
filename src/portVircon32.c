@@ -91,6 +91,82 @@ int viewOrigH = 0;
 float mouseX = 0.0;
 float mouseY = 0.0;
 
+#ifdef DEBUG_MODE
+// Same reasoning as mouseX/mouseY above: global, not local to main(),
+// so md_onReplayStart() below can reset these too - at the start of
+// every replay loop, not just on a Y press. debugPrevAvgCycles holds
+// whatever debugAvgCycles was reading right before the most recent
+// reset, so the overlay can show "this loop's average so far" and
+// "the previous loop's final average" side by side.
+float debugAvgCycles = 0.0;
+int debugCycleSampleCount = 0;
+float debugPrevAvgCycles = 0.0;
+// Unlike debugPrevAvgCycles above, this one deliberately does NOT reset
+// on every replay loop - only on Y, matching debugMaxCycles/
+// debugMaxObjCount's own "reset only on Y" behavior elsewhere in this
+// file. Tracks the highest debugPrevAvgCycles has ever reached across
+// however many loops have run since the last Y press, so a single
+// unusually expensive loop stays visible even after later loops have
+// already moved on to their own, lower averages.
+float debugMaxPrevAvgCycles = 0.0;
+
+// Promoted from locals inside main() to globals for the same reason
+// mouseX/mouseY and the AVG/PREV tracking above were: stats recording
+// mode's Y-equivalent reset (md_onReplayStart() below) needs to reach
+// these from outside main(), where they'd otherwise be unreachable
+// local variables.
+int debugMaxCycles = 0;
+float debugMinFps = 999.0;
+int debugMaxObjCount = 0;
+
+// Stats recording mode: an automated benchmark that steps through every
+// game in turn, auto-plays each one just enough to record a replay,
+// lets that replay loop run a fixed number of times to get a stable
+// max-cycles-per-frame reading, then moves to the next game - ending
+// with a results screen listing every game's number. Started with X;
+// see updateStatsRecording() below for the full walkthrough of why each
+// piece exists.
+#define STATS_A_PRESS_INTERVAL_FRAMES 60
+#define STATS_REPLAY_LOOPS_TO_MEASURE 2
+// Safety net for a game that never reaches game over from A-only
+// input (no reachable fail condition that way, or just an unusually
+// long survival time) - without this, that one game would hang the
+// whole unattended run indefinitely, with nothing watching for it or
+// able to recover. 3600 frames is one full minute of real gameplay
+// time at 60 FPS - comfortably longer than any of these games
+// realistically take to end even at their most forgiving, but still
+// bounded.
+#define STATS_IN_GAME_TIMEOUT_FRAMES 3600
+
+bool statsRecordingActive = false;
+bool statsShowingResults = false;
+int statsGameIndex = 1;
+int statsAutoplayFrameCounter = 0;
+// Counts every md_onReplayStart() firing for the current game since its
+// last game over - reset to 0 right when the Y-equivalent reset fires
+// (see md_onReplayStart() below), so reaching
+// STATS_REPLAY_LOOPS_TO_MEASURE from that point on is unambiguous:
+// "this many loops have completed since the reset", not "since
+// whenever this counter started".
+int statsReplayLoopCount = 0;
+bool statsYResetDoneForThisGame = false;
+int statsInGameFrameCounter = 0;
+// gameOver() fires during replay playback too, not just from the
+// auto-played gameplay this mode drives directly - a recorded replay
+// is a faithful recording of a session that ended in death, so every
+// loop naturally reaches that same death point and triggers gameOver()
+// again on its own. Skipping the normal ~2-second game-over-screen
+// wait (see updateStatsRecording() below) is only correct for the one,
+// genuine transition from real auto-played gameplay into the first
+// replay - applying it every time state == STATE_GAME_OVER is seen
+// would skip that wait on *every* loop's own death point too, cutting
+// each one short and restarting it instantly rather than letting it
+// play out normally. This flag is what keeps the skip to exactly once
+// per game.
+bool statsInitialGameOverHandled = false;
+float[MAX_GAME_COUNT] statsResults;
+#endif
+
 // Vircon32's GPU has no scissor/clip rect at all (checked video.h - there
 // is genuinely nothing like it), so any draw call that lands even
 // partially outside the game's logical [0,viewOrigW]x[0,viewOrigH] view
@@ -377,6 +453,59 @@ void md_initView(int w, int h) {
   mouseY = h / 2.0;
 }
 
+// Called from startReplay() (cglp.c) - see machineDependent.h's own
+// comment on the declaration for why resetting specifically here
+// matters: it's the one function actually called at every replay
+// (re)start, so resetting here keeps every loop's measurement window
+// aligned the same way, which is what makes AVG/PREV meaningful to
+// compare between loops of the exact same, fully deterministic replay.
+void md_onReplayStart() {
+#ifdef DEBUG_MODE
+  debugPrevAvgCycles = debugAvgCycles;
+  if (debugPrevAvgCycles > debugMaxPrevAvgCycles) {
+    debugMaxPrevAvgCycles = debugPrevAvgCycles;
+  }
+  debugAvgCycles = 0.0;
+  debugCycleSampleCount = 0;
+
+  if (statsRecordingActive && !statsShowingResults && currentGameIndex == statsGameIndex) {
+    statsReplayLoopCount++;
+    if (statsReplayLoopCount == 2 && !statsYResetDoneForThisGame) {
+      // "On the 2nd replay start, press Y" - Y's real handler (in
+      // main() below) isn't reachable from here, so this directly
+      // performs the same reset it does, rather than trying to
+      // synthesize a button press that would only be read a frame
+      // later anyway. debugPrevAvgCycles/debugAvgCycles/
+      // debugCycleSampleCount are deliberately NOT touched here, unlike
+      // in Y's own handler - they're already correctly set by this
+      // function's own unconditional logic just above (lines 451-456),
+      // which already ran earlier in this exact same call. Setting
+      // debugPrevAvgCycles here too, the way Y's handler does, would
+      // overwrite the value it was just correctly given with 0 -
+      // debugAvgCycles has already been zeroed above by the time this
+      // runs, so copying it again just copies that zero forward.
+      debugMaxCycles = 0;
+      debugMinFps = 999.0;
+      debugCacheHits = 0;
+      debugCacheMisses = 0;
+      debugMaxObjCount = 0;
+      debugMaxPrevAvgCycles = 0.0;
+      statsYResetDoneForThisGame = true;
+      // Recount from here, not from game over - "10 more times" means
+      // 10 loops after *this* reset, not 10 loops minus the 2 that
+      // already ran to get here.
+      statsReplayLoopCount = 0;
+    } else if (statsYResetDoneForThisGame && statsReplayLoopCount >= STATS_REPLAY_LOOPS_TO_MEASURE) {
+      statsResults[statsGameIndex] = debugMaxPrevAvgCycles;
+      statsGameIndex++;
+      statsAutoplayFrameCounter = 0;
+      statsReplayLoopCount = 0;
+      statsYResetDoneForThisGame = false;
+    }
+  }
+#endif
+}
+
 // No text-output channel exists on real Vircon32 hardware (no serial/log
 // device in the standard library), so this is a no-op. If you need to
 // debug, temporarily route this through print_at() from video.h instead.
@@ -469,9 +598,14 @@ void drawDebugPhysicalRect(int x, int y, int w, int h, int r, int g, int b) {
 // useful "how much is this frame actually dealing with" number, not a
 // count of the game's own objects, which aren't uniformly accessible
 // across all 42 games the way this engine-level count is) and the max
-// seen since the last reset; cycles used this frame (and the max seen);
-// instantaneous FPS (and the min seen); and the character-pattern
-// cache's hit/miss counts.
+// seen since the last reset; cycles used this frame, the max seen, and
+// a running average since the last reset (computed incrementally -
+// avg += (new - avg) / count - rather than as a running sum divided by
+// frame count, since a plain sum risks overflowing a 32-bit int over a
+// long enough session at up to ~250,000 cycles/frame, where the
+// incremental form never accumulates a large value regardless of how
+// long the session runs); instantaneous FPS (and the min seen); and
+// the character-pattern cache's hit/miss counts.
 //
 // Uses print_at() (video.h) - Vircon32's own built-in BIOS-font text
 // primitive - instead of the engine's text()/drawCharacters(), since a
@@ -515,15 +649,15 @@ void drawDebugPhysicalRect(int x, int y, int w, int h, int r, int g, int b) {
 //    "99"). drawDebugPhysicalRect() below paints a plain black backing
 //    rect across the whole overlay first, every frame, before any text
 //    goes on top of it.
-void drawDebugOverlay(int cyclesThisFrame, int maxCycles, float instantFps, float minFps, int objCount, int maxObjCount) {
+void drawDebugOverlay(int cyclesThisFrame, int maxCycles, float avgCycles, float prevAvgCycles, float maxPrevAvgCycles, float instantFps, float minFps, int objCount, int maxObjCount) {
   int lineX = 4;
-  int lineY = screenH - 4 * bios_character_height - 4;
+  int lineY = screenH - 6 * bios_character_height - 4;
 
   // Sized generously wide (200px, ~20 BIOS characters) to comfortably
   // fit the longest realistic line ("CACHE 99999/99999" is 18) with
-  // margin either side, tall enough for all 4 lines plus a couple of
+  // margin either side, tall enough for all 6 lines plus a couple of
   // pixels of padding top and bottom.
-  drawDebugPhysicalRect(lineX - 2, lineY - 2, 200, 4 * bios_character_height + 4, 0, 0, 0);
+  drawDebugPhysicalRect(lineX - 2, lineY - 2, 200, 6 * bios_character_height + 4, 0, 0, 0);
 
   set_multiply_color(make_color_rgb(255, 255, 0));
   lastGpuR = 255;
@@ -544,19 +678,158 @@ void drawDebugOverlay(int cyclesThisFrame, int maxCycles, float instantFps, floa
   strcat(line1, intToChar(maxCycles));
   print_at(lineX, lineY + bios_character_height, line1);
 
+  int[32] lineAvg;
+  strcpy(lineAvg, "AVG ");
+  strcat(lineAvg, intToChar((int)avgCycles));
+  print_at(lineX, lineY + 2 * bios_character_height, lineAvg);
+
+  int[32] linePrevAvg;
+  strcpy(linePrevAvg, "PREV ");
+  strcat(linePrevAvg, intToChar((int)prevAvgCycles));
+  strcat(linePrevAvg, "/");
+  strcat(linePrevAvg, intToChar((int)maxPrevAvgCycles));
+  print_at(lineX, lineY + 3 * bios_character_height, linePrevAvg);
+
   int[32] line2;
   strcpy(line2, "FPS ");
   strcat(line2, intToChar((int)instantFps));
   strcat(line2, "/");
   strcat(line2, intToChar((int)minFps));
-  print_at(lineX, lineY + 2 * bios_character_height, line2);
+  print_at(lineX, lineY + 4 * bios_character_height, line2);
 
   int[32] line3;
   strcpy(line3, "CACHE ");
   strcat(line3, intToChar(debugCacheHits));
   strcat(line3, "/");
   strcat(line3, intToChar(debugCacheMisses));
-  print_at(lineX, lineY + 3 * bios_character_height, line3);
+  print_at(lineX, lineY + 5 * bios_character_height, line3);
+}
+
+// Drives the per-frame state machine for stats recording mode - see
+// the comment above statsRecordingActive's declaration for the overall
+// design and machineDependent.h/md_onReplayStart() above for the
+// replay-loop-counting and Y-equivalent-reset half of it. This half
+// handles game selection and the A-button autoplay. Returns the value
+// "a" should actually have this frame - either the real gamepad's
+// value passed in unchanged, or a synthetic press this mode is
+// injecting in its place.
+bool updateStatsRecording() {
+  if (statsGameIndex >= gameCount) {
+    statsShowingResults = true;
+    return false;
+  }
+
+  if (currentGameIndex != statsGameIndex) {
+    // Not yet in the game this mode wants to be benchmarking this
+    // round - select it. resetGame() (via restartGame()) always clears
+    // any previous replay first, so a hasTitle game lands on a replay-
+    // less title screen; skip straight into real gameplay here rather
+    // than waiting for a synthetic press to do it a frame later - one
+    // less state transition to reason about, and it starts the
+    // 60-frame countdown below from a known point rather than an
+    // arbitrary one.
+    restartGame(statsGameIndex);
+    if (state != STATE_IN_GAME) {
+      initInGame();
+    }
+    statsAutoplayFrameCounter = 0;
+    statsReplayLoopCount = 0;
+    statsYResetDoneForThisGame = false;
+    statsInGameFrameCounter = 0;
+    statsInitialGameOverHandled = false;
+    return false;
+  }
+
+  if (state == STATE_IN_GAME) {
+    statsInGameFrameCounter++;
+    if (statsInGameFrameCounter >= STATS_IN_GAME_TIMEOUT_FRAMES) {
+      // This game hasn't reached a game over on its own in the time
+      // allotted - force one rather than let it hang the rest of the
+      // run. Whatever got recorded up to this point is still a real,
+      // fully deterministic input sequence, just not one that ends in
+      // a natural death - fine for this mode's purposes, since what's
+      // being measured is the replay loop's cycle cost, not how the
+      // playthrough itself ends.
+      gameOver();
+      return false;
+    }
+    statsAutoplayFrameCounter++;
+    if (statsAutoplayFrameCounter >= STATS_A_PRESS_INTERVAL_FRAMES) {
+      statsAutoplayFrameCounter = 0;
+      return true;
+    }
+    return false;
+  }
+
+  if (state == STATE_GAME_OVER) {
+    // Pressing A stops implicitly - state isn't STATE_IN_GAME anymore,
+    // so the branch above simply doesn't run this frame or any frame
+    // after.
+    if (!statsInitialGameOverHandled) {
+      // This is the one, genuine transition from real auto-played
+      // gameplay into the first replay - skip the real ~2-second
+      // game-over-screen timeout updateGameOver() (cglp.c) would
+      // otherwise apply before it moves on by itself, since nothing
+      // about that wait is part of what's being measured. Every
+      // *subsequent* time this branch runs, for the rest of this
+      // game's benchmarking, is a replay loop reaching its own
+      // recorded death point mid-playback (gameOver() fires there too,
+      // faithfully, since the replay is a recording of a session that
+      // ended that way) - not a real game over, and this flag is what
+      // stops the skip from firing on those too. Doing so would cut
+      // every single loop short right at its own death point and
+      // restart it instantly rather than letting it play out normally,
+      // which is likely why an earlier version of this played back
+      // "extremely fast" and looked like replays were being skipped -
+      // every loop actually was being cut short, on every single one,
+      // not just the first.
+      statsInitialGameOverHandled = true;
+      initTitle();
+    }
+    return false;
+  }
+
+  // STATE_TITLE: a replay (recorded by the playthrough that was just
+  // auto-played above) is now looping on its own - nothing to press,
+  // nothing to drive. All the counting/resetting/recording for this
+  // part happens in md_onReplayStart() above, triggered automatically
+  // as each loop (re)starts.
+  return false;
+}
+
+// The results screen stats recording mode ends on - white background
+// and black BIOS-font text specifically so a plain screenshot is
+// enough to run through OCR cleanly, rather than needing to fight the
+// low-res in-game font or a colored background first. Three columns
+// keeps it comfortably within the screen's height even at
+// MAX_GAME_COUNT - 1 games (48, the largest this could ever need to
+// be) - see this function's own column/row math below for why that
+// bound holds.
+void drawStatsResults() {
+  md_clearScreen(255, 255, 255);
+  set_multiply_color(make_color_rgb(0, 0, 0));
+  lastGpuR = 0;
+  lastGpuG = 0;
+  lastGpuB = 0;
+
+  int columns = 3;
+  int marginX = 8;
+  int marginY = 8;
+  int colWidth = (screen_width - marginX * 2) / columns;
+  int rowHeight = bios_character_height;
+
+  for (int i = 1; i < gameCount; i++) {
+    int col = (i - 1) % columns;
+    int row = (i - 1) / columns;
+    int x = marginX + col * colWidth;
+    int y = marginY + row * rowHeight;
+
+    int[32] line;
+    strcpy(line, intToChar(i));
+    strcat(line, ": ");
+    strcat(line, intToChar((int)statsResults[i]));
+    print_at(x, y, line);
+  }
 }
 #endif
 
@@ -601,8 +874,6 @@ void main() {
   bool hasMenuBeenDrawnThisVisit = false;
 
 #ifdef DEBUG_MODE
-  int debugMaxCycles = 0;
-  float debugMinFps = 999.0;
   // FPS for the frame currently being drawn can't be known until after
   // this iteration's end_frame() wait completes - see where it's
   // measured below - so this always displays the *previous* frame's
@@ -610,8 +881,8 @@ void main() {
   // real-time FPS counter necessarily lags by one frame.
   float debugInstantFps = 60.0;
   int debugPrevFrameCounter = get_frame_counter();
-  int debugMaxObjCount = 0;
   bool prevYPressed = false;
+  bool prevXPressed = false;
 #endif
 
 
@@ -637,8 +908,51 @@ void main() {
       debugCacheHits = 0;
       debugCacheMisses = 0;
       debugMaxObjCount = 0;
+      debugPrevAvgCycles = debugAvgCycles;
+      debugAvgCycles = 0.0;
+      debugCycleSampleCount = 0;
+      debugMaxPrevAvgCycles = 0.0;
     }
     prevYPressed = yPressed;
+
+    // Stats recording mode - see updateStatsRecording() below for the
+    // full state machine. Ignored if already running: X only starts a
+    // fresh run, it doesn't restart one in progress.
+    bool xPressed = gamepad_button_x() > 0;
+    if (xPressed && !prevXPressed && !statsRecordingActive) {
+      statsRecordingActive = true;
+      statsShowingResults = false;
+      statsGameIndex = 1;
+      statsAutoplayFrameCounter = 0;
+      statsReplayLoopCount = 0;
+      statsYResetDoneForThisGame = false;
+      statsInGameFrameCounter = 0;
+      statsInitialGameOverHandled = false;
+    }
+    prevXPressed = xPressed;
+
+    if (statsRecordingActive && !statsShowingResults) {
+      // Fully isolate this mode from the real gamepad, not just the A
+      // button - a game auto-playing itself, or a replay looping on
+      // its own, needs to never see anything from the real controller,
+      // stray or otherwise. Left uncaught, even a single accidental
+      // press of any of these while a replay is supposed to be
+      // looping unattended would trip updateTitle()'s own
+      // "currentInput.isJustPressed -> initInGame()" check (cglp.c) -
+      // yanking it out of replay playback and into real gameplay
+      // instead, silently, with nothing here watching for it since
+      // currentGameIndex wouldn't have changed to signal anything went
+      // wrong. left/right/up/down/b are overridden unconditionally
+      // here (this mode never needs any of them, regardless of game or
+      // phase); "a" specifically comes from updateStatsRecording()
+      // itself, since what it should be depends on the state machine.
+      left = false;
+      right = false;
+      up = false;
+      down = false;
+      b = false;
+      a = updateStatsRecording();
+    }
 #endif
 
     bool usesMouse = getGame(currentGameIndex)->usesMouse;
@@ -684,6 +998,11 @@ void main() {
       hasMenuBeenDrawnThisVisit = true;
     }
 
+#ifdef DEBUG_MODE
+    if (statsRecordingActive && statsShowingResults) {
+      drawStatsResults();
+    } else {
+#endif
     updateFrame();
 
     // Vircon32 has no real mouse, so the 8 mouse-driven games can't show
@@ -711,10 +1030,13 @@ void main() {
     if (debugCyclesThisFrame > debugMaxCycles) {
       debugMaxCycles = debugCyclesThisFrame;
     }
+    debugCycleSampleCount++;
+    debugAvgCycles += ((float)debugCyclesThisFrame - debugAvgCycles) / (float)debugCycleSampleCount;
     if (hitBoxesIndex > debugMaxObjCount) {
       debugMaxObjCount = hitBoxesIndex;
     }
-    drawDebugOverlay(debugCyclesThisFrame, debugMaxCycles, debugInstantFps, debugMinFps, hitBoxesIndex, debugMaxObjCount);
+    drawDebugOverlay(debugCyclesThisFrame, debugMaxCycles, debugAvgCycles, debugPrevAvgCycles, debugMaxPrevAvgCycles, debugInstantFps, debugMinFps, hitBoxesIndex, debugMaxObjCount);
+    }
 #endif
 
     end_frame();
