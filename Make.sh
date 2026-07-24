@@ -21,9 +21,28 @@ echo --------------------------
 compile src/main.c -o obj/main.asm || abort_build
 
 echo
+echo Optimize the ASM code - v32opt, optional
+echo --------------------------
+# v32opt (https://github.com/wedge1020/v32opt) is a third-party,
+# optional post-compile assembly optimizer - not part of the official
+# Vircon32 toolchain, and not required to build this project. Skipped
+# automatically if not found on PATH, or if SKIP_V32OPT=1 is set
+# (e.g. `SKIP_V32OPT=1 ./Make.sh`) - either way, the unoptimized
+# assembly from compile.exe is used directly, same as if this step
+# didn't exist.
+ASM_TO_ASSEMBLE=obj/main.asm
+if [ "$SKIP_V32OPT" = "1" ]; then
+    echo SKIP_V32OPT=1 set - skipping, using unoptimized assembly
+elif command -v v32opt >/dev/null 2>&1; then
+    v32opt obj/main.asm obj/main_opt.asm -O3 && ASM_TO_ASSEMBLE=obj/main_opt.asm
+else
+    echo v32opt not found on PATH - skipping, using unoptimized assembly
+fi
+
+echo
 echo Assemble the ASM code
 echo --------------------------
-assemble obj/main.asm -o obj/main.vbin || abort_build
+assemble "$ASM_TO_ASSEMBLE" -o obj/main.vbin || abort_build
 
 echo
 echo Convert the PNG textures
