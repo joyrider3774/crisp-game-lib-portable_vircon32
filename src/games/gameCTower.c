@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* ctowerTitle = "C TOWER";
-char* ctowerDescription = "[Hold] Climb";
+char* ctowerDescription = "[Hold]\n Climb";
 
 int[2][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] ctowerCharacters = {
     {

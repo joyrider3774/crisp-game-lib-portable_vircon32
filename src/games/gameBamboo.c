@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* bambooTitle = "BAMBOO";
-char* bambooDescription = "[Tap]  Turn\n[Hold] Through";
+char* bambooDescription = "[Tap]\n Turn\n[Hold]\n Through";
 
 int[2][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] bambooCharacters = {
     {   // Runner frame 1 'b'

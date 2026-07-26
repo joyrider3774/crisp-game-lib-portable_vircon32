@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* chargebeamTitle = "CHARGE BEAM";
-char* chargebeamDescription = "[Tap]     Shot\n[Hold]    Charge\n[Release] Fire";
+char* chargebeamDescription = "[Tap]\n Shot\n[Hold]\n Charge\n[Release]\n Fire";
 
 int[5][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] chargebeamCharacters = {
     {

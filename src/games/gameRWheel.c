@@ -44,7 +44,10 @@ struct RwheelBonus {
   float radius;
   bool isAlive;
 };
-#define RWHEEL_MAX_BONUS_COUNT 8
+// Bonuses are only removed by the player catching them (never time out); up to
+// ceil(validSpikeCount/9)=4 get added on every fresh grounded jump, so a few
+// landings without a catch already exceeds 8.
+#define RWHEEL_MAX_BONUS_COUNT 64
 RwheelBonus[RWHEEL_MAX_BONUS_COUNT] rwheelBonuses;
 int rwheelBonusIndex;
 struct RwheelPlayer {

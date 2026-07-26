@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* barollTitle = "BAROLL";
-char* barollDescription = "[Tap]  Jump\n[Hold] Slow down";
+char* barollDescription = "[Tap]\n Jump\n[Hold]\n Slow down";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] barollCharacters = {
     {   // Barrel 'a'

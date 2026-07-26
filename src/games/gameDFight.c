@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* dfightTitle = "D FIGHT";
-char* dfightDescription = "[Slide] Move";
+char* dfightDescription = "[Slide]\n Move";
 
 int[4][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] dfightCharacters = {
     {
@@ -341,7 +341,7 @@ void dfightUpdate() {
     if (a->type == 'e' && c.isColliding.rect[BLUE]) {
       play(POWER_UP);
       particle(a->pos.x, a->pos.y, 5, 1, 0, M_PI * 2);
-      addScore(1, a->pos.x, a->pos.y);
+      addScore(1, SCORE_NO_POPUP_X, SCORE_NO_POPUP_Y);
       a->isAlive = false;
     } else if (a->type == 'a' && c.isColliding.rect[RED]) {
       play(COIN);

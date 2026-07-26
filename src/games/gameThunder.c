@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* thunderTitle = "THUNDER";
-char* thunderDescription = "[Tap]   Turn\n[Arrow] Move";
+char* thunderDescription = "[Tap]\n Turn\n[Arrow]\n Move";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] thunderCharacters = {
     {
@@ -41,7 +41,15 @@ struct ThunderLine {
   bool isActive;
   bool isAlive;
 };
-#define THUNDER_MAX_LINE_COUNT 128
+// Branching lightning tree: each completed branch spawns 1-3 children and
+// old branches only die once a chain reaches the ground (via prevLine
+// walk-back), so live count can climb well past the explosion-trigger
+// check below before it fires. Upstream JS explicitly allows up to
+// lines.length > 160 before forcing that explosion - keep this capacity
+// above that literal threshold (with headroom for same-tick overshoot from
+// multiple branches completing at once) so the ring buffer never wraps
+// into a still-growing/still-drawn branch.
+#define THUNDER_MAX_LINE_COUNT 256
 ThunderLine[THUNDER_MAX_LINE_COUNT] thunderLines;
 int thunderLineIndex;
 int thunderActiveTicks;
@@ -111,7 +119,7 @@ void thunderUpdate() {
     }
     if (l->ticks > 0) {
       vectorAdd(&l->to, l->vel.x, l->vel.y);
-      if (thunderActiveTicks < 0 && (l->to.y > 90 || lc >= THUNDER_MAX_LINE_COUNT)) {
+      if (thunderActiveTicks < 0 && (l->to.y > 90 || lc >= 160)) {
         play(EXPLOSION);
         ThunderLine* al = l;
         color = YELLOW;

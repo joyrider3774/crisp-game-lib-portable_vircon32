@@ -58,7 +58,10 @@ struct ReflectorTank {
   float fireSpeed;
   bool isAlive;
 };
-#define REFLECTOR_MAX_TANK_COUNT 32
+// Tanks only die early via a deflected-bullet explosion (skill-dependent) or
+// by fully traversing the screen; life(traversal)/spawn-interval averages
+// ~26 concurrent tanks even at baseline difficulty, so 32 is too tight.
+#define REFLECTOR_MAX_TANK_COUNT 128
 ReflectorTank[REFLECTOR_MAX_TANK_COUNT] reflectorTanks;
 int reflectorTankIndex;
 float reflectorNextTankTicks;
@@ -67,7 +70,10 @@ struct ReflectorBullet {
   Vector vel;
   bool isAlive;
 };
-#define REFLECTOR_MAX_BULLET_COUNT 32
+// Per-tank fire interval is ~1/difficulty while bullet life only shrinks as
+// ~1/sqrt(difficulty), so with ~tankCount tanks firing, concurrent bullets
+// grow ~sqrt(difficulty) - unbounded over a long session.
+#define REFLECTOR_MAX_BULLET_COUNT 256
 ReflectorBullet[REFLECTOR_MAX_BULLET_COUNT] reflectorBullets;
 int reflectorBulletIndex;
 struct ReflectorExplosion {

@@ -24,7 +24,10 @@ struct BblastBall {
     bool isAlive;
 };
 
-#define MAX_BALL_COUNT 50
+// Raised from 50: balls never expire except via player-triggered blast, and
+// the per-release combo multiplier rewards delaying that blast to stack up
+// balls, while normal-ball spawn interval shrinks unboundedly as 30/difficulty.
+#define MAX_BALL_COUNT 400
 BblastBall[MAX_BALL_COUNT] bblastBalls;
 int bblastBallIndex;
 float bblastNextBallTicks;

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* cnodesTitle = "C NODES";
-char* cnodesDescription = "[Tap] Cut";
+char* cnodesDescription = "[Tap]\n Cut";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] cnodesCharacters = {{
     "      ",

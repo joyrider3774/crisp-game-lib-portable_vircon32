@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* bcannonTitle = "B CANNON";
-char* bcannonDescription = "[Tap]  Turn\n[Hold] Fire";
+char* bcannonDescription = "[Tap]\n Turn\n[Hold]\n Fire";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] bcannonCharacters = {
     {   // Cannon frame 1 'a'

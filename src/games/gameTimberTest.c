@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* timbertestTitle = "TIMBER TEST";
-char* timbertestDescription = "[Tap] Cut a log";
+char* timbertestDescription = "[Tap]\n Cut a log";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] timbertestCharacters = {
     {

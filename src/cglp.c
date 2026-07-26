@@ -77,7 +77,16 @@ struct HitBox {
 
 // had to increase for:
 // gameCircleW (reached around 800) ... gameFrog (~1580) ... R Wheel (~400) ... B Cannon (~300)
-#define MAX_HIT_BOX_COUNT 512
+// Vircon32 port note: this constant was left at its old 512 default even
+// though the comment above (carried over from upstream) already documents
+// real per-game requirements up to ~1580 - meaning gameFroooog (the "Frog"
+// game referenced above, already ported) could have been silently dropping
+// hitboxes for the second half of a busy frame all along, with any
+// resulting missed collisions never surfacing as a visible error. Raised
+// to comfortably clear the documented worst case (1580) with headroom for
+// games not yet profiled this way; memory cost is still trivial (2048 *
+// sizeof(HitBox) = 14336 words, versus Vircon32's 4M-word RAM budget).
+#define MAX_HIT_BOX_COUNT 2048
 HitBox[MAX_HIT_BOX_COUNT] hitBoxes;
 int hitBoxesIndex;
 
@@ -375,10 +384,26 @@ void drawLine(float x, float y, float ox, float oy, Collision* hitCollision) {
   float lx = fabs(ox);
   float ly = fabs(oy);
   float rn;
+  // Vircon32 port note: a line is approximated by placing "rn" thickness x
+  // thickness squares evenly spaced from one end to the other (spacing =
+  // dominant-axis length / (rn - 1)), so gap-free coverage requires
+  // spacing <= t, i.e. rn - 1 >= len / t, i.e. rn >= len / t + 1. Using
+  // plain ceil(len / t) here (without the "+ 1") only guarantees rn >=
+  // len / t, which is NOT the same bound - whenever len / t already lands
+  // on an exact integer (e.g. len=9, t=3 -> exactly 3), ceil() leaves it
+  // unchanged at 3 instead of bumping to the 4 actually required, and the
+  // resulting spacing (len / (rn - 1) = 4.5) ends up bigger than
+  // thickness - a real, provable gap between adjacent squares, not merely
+  // a floor()-rounding artifact. This under-provisioning was invisible for
+  // most already-ported games (whichever segment lengths they happen to
+  // draw mostly avoid the exact boundary), but gameTurbulent's terrain
+  // segments sit right at it - hence the floor gaps the player could fall
+  // through there. The "+ 1" below closes the gap in general, not just for
+  // that one game.
   if (lx > ly) {
-    rn = ceil(lx / t);
+    rn = ceil(lx / t) + 1;
   } else {
-    rn = ceil(ly / t);
+    rn = ceil(ly / t) + 1;
   }
   if (rn < 3) {
     rn = 3;
@@ -941,7 +966,7 @@ void updateScoreBoards() {
 void addScore(float value, float x, float y) {
   score += value;
   int v = (int)value;
-  if (v > 9999999) {
+  if (v == 0 || v > 9999999) {
     return;
   }
   ScoreBoard* sb = &scoreBoards[scoreBoardsIndex];

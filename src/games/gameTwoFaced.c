@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* twofacedTitle = "TWO FACED";
-char* twofacedDescription = "[Tap]  Turn\n[Hold] Go forward";
+char* twofacedDescription = "[Tap]\n Turn\n[Hold]\n Go forward";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] twofacedCharacters = {
     {

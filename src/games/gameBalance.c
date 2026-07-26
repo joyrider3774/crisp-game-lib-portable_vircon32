@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* balanceTitle = "BALANCE";
-char* balanceDescription = "[Slide] Move";
+char* balanceDescription = "[Slide]\n Move";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] balanceCharacters = {
     {

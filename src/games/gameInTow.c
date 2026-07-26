@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* intowTitle = "IN TOW";
-char* intowDescription = "[Tap] Multiple jumps";
+char* intowDescription = "[Tap]\n Multiple jumps";
 
 int[4][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] intowCharacters = {
     {
@@ -59,7 +59,11 @@ struct IntowFallingChick {
   float vy;
   bool isAlive;
 };
-#define IN_TOW_MAX_FALLING_CHICK_COUNT 32
+// A hit on the lead towed chick converts the whole train (up to
+// IN_TOW_MAX_CHICK_COUNT=30) into falling chicks in a single frame; leave
+// headroom above 30 so chicks already mid-fall from earlier releases aren't
+// clobbered by that burst.
+#define IN_TOW_MAX_FALLING_CHICK_COUNT 64
 IntowFallingChick[IN_TOW_MAX_FALLING_CHICK_COUNT] intowFallingChicks;
 int intowFallingChickIndex;
 struct IntowFloor {

@@ -58,7 +58,10 @@ struct DivarrFalling {
   bool isAlive;
 };
 
-#define DIVARR_MAX_FALLING_COUNT 64
+// Spawn interval scales as ~70/difficulty ticks but fall speed (and thus
+// lifetime) only as ~sqrt(difficulty) -> concurrent count grows as
+// ~30*sqrt(difficulty), already exceeding 64 within a few minutes of play.
+#define DIVARR_MAX_FALLING_COUNT 512
 DivarrFalling[DIVARR_MAX_FALLING_COUNT] divarrFallings;
 int divarrFallingIndex;
 
