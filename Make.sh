@@ -73,7 +73,7 @@ ASM_TO_ASSEMBLE=obj/main.asm
 if [ "$SKIP_V32OPT" = "1" ]; then
     echo SKIP_V32OPT=1 set - skipping, using unoptimized assembly
 elif command -v v32opt >/dev/null 2>&1; then
-    v32opt obj/main.asm obj/main_opt.asm -O3 && ASM_TO_ASSEMBLE=obj/main_opt.asm
+    v32opt obj/main.asm obj/main_opt.asm -v -O3 && ASM_TO_ASSEMBLE=obj/main_opt.asm
 else
     echo v32opt not found on PATH - skipping, using unoptimized assembly
 fi
