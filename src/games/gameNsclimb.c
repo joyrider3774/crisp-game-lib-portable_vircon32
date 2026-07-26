@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* nsclimbTitle = "NS CLIMB";
-int* nsclimbDescription = "[Tap]\n Reverse";
+int* nsclimbDescription = "[Tap] Reverse";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] nsclimbCharacters = {{
     "      ",

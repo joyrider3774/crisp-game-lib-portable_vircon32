@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* pfitTitle = "P FIT";
-int* pfitDescription = "[Slide]\n Move";
+int* pfitDescription = "[Slide] Move";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] pfitCharacters = {{
     "      ",

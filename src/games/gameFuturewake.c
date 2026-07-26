@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* futurewakeTitle = "FUTURE WAKE";
-int* futurewakeDescription = "[Slide]\n Move";
+int* futurewakeDescription = "[Slide] Move";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] futurewakeCharacters = {{
     "      ",

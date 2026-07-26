@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* vhwallsTitle = "VH WALLS";
-int* vhwallsDescription = "[Tap]\n Place wall";
+int* vhwallsDescription = "[Tap] Place wall";
 
 int[2][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] vhwallsCharacters = {
     {

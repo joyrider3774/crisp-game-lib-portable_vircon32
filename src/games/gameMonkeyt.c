@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* monkeytTitle = "MONKEY T";
-int* monkeytDescription = "[Hold]\n Compress\n[Release]\n Launch";
+int* monkeytDescription = "[Hold]\n  Compress\n[Release]\n  Launch";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] monkeytCharacters = {
     {

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* rolfrgTitle = "ROLFRG";
-int* rolfrgDescription = "[Press]\n Turn";
+int* rolfrgDescription = "[Press] Turn";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] rolfrgCharacters = {{
     "      ",

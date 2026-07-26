@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* elastichTitle = "ELASTIC HERO";
-int* elastichDescription = "[Hold]\n Stretch & Aim\n[Release]\n Launch";
+int* elastichDescription = "[Hold] Stretch & Aim\n[Release] Launch";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] elastichCharacters = {{
     "      ",

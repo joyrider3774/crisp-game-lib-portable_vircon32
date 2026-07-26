@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* echobridgeTitle = "ECHO BRIDGE";
-int* echobridgeDescription = "[Press]\n Create bridge";
+int* echobridgeDescription = "[Press] Create bridge";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] echobridgeCharacters = {{
     "      ",

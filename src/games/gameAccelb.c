@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* accelbTitle = "ACCEL B";
-int* accelbDescription = "[Tap]\n Fire\n[Hold]\n Accel";
+int* accelbDescription = "[Tap]  Fire\n[Hold] Accel";
 
 int[2][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] accelbCharacters = {
     {

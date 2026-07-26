@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* clinghopTitle = "CLING HOP";
-int* clinghopDescription = "[Tap]\n Flap";
+int* clinghopDescription = "[Tap] Flap";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] clinghopCharacters = {{
     "      ",

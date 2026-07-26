@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* cuecrumbTitle = "CUE CRUMB";
-int* cuecrumbDescription = "[Tap]\n Thrust forward";
+int* cuecrumbDescription = "[Tap] Thrust forward";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] cuecrumbCharacters = {{
     "      ",

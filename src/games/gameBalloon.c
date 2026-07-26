@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* balloonTitle = "BALLOON";
-int* balloonDescription = "[Slide]\n Wind";
+int* balloonDescription = "[Slide] Wind";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] balloonCharacters = {{
     "      ",

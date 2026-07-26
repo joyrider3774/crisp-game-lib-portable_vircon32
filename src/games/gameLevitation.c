@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* levitationTitle = "LEVITATION";
-int* levitationDescription = "[Tap]\nLevitate / Fall";
+int* levitationDescription = "[Tap] Levitate / Fall";
 
 int[2][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] levitationCharacters = {
     {

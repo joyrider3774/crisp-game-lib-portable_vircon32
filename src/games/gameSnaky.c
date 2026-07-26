@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* snakyTitle = "SNAKY";
-int* snakyDescription = "[Hold]\n Up";
+int* snakyDescription = "[Hold] Up";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] snakyCharacters = {{
     " llll ",

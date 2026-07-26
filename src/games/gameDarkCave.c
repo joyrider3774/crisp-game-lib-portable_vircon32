@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* darkcaveTitle = "DARK CAVE";
-char* darkcaveDescription = "[Slide]\n Move";
+char* darkcaveDescription = "[Slide] Move";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] darkcaveCharacters = {{
     "      ",

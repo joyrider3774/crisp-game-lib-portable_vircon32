@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* ringblastTitle = "RING BLAST";
-int* ringblastDescription = "[D-Pad]\n Change angle/speed";
+int* ringblastDescription = "[Slide]\n Change\n angle/speed";
 
 int[2][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] ringblastCharacters = {
     {

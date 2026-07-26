@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* screenTitle = "SCREEN";
-int* screenDescription = "[Tap]\n Fire";
+int* screenDescription = "[Tap] Fire";
 
 int[4][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] screenCharacters = {
     {

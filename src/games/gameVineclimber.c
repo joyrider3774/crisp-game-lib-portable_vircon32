@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* vineclimberTitle = "VINE CLIMBER";
-int* vineclimberDescription = "[Hold]\n Climb\n[Release]\n Slide";
+int* vineclimberDescription = "[Hold] Climb\n[Release] Slide";
 int[4][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] vineclimberCharacters = {
     {
         "  ll  ",

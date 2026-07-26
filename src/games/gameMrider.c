@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* mriderTitle = "M RIDER";
-int* mriderDescription = "[Hold]\n Go up";
+int* mriderDescription = "[Hold] Go up";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] mriderCharacters = {
     {

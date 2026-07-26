@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* llandTitle = "LLAND";
-int* llandDescription = "[Hold]\n Thrust up";
+int* llandDescription = "[Hold] Thrust up";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] llandCharacters = {{
     " llll ",

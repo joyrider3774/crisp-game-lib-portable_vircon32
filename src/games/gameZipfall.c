@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* zipfallTitle = "ZIP FALL";
-int* zipfallDescription = "[Tap]\n Fall";
+int* zipfallDescription = "[Tap] Fall";
 
 // Vircon32 port note: character rows shorter than CHARACTER_WIDTH(6) are
 // padded with trailing spaces to exactly 6 characters (string-literal array

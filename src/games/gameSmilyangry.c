@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* smilyangryTitle = "SMILY ANGRY";
-int* smilyangryDescription = "[Tap]\n Turn";
+int* smilyangryDescription = "[Tap] Turn";
 
 int[4][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] smilyangryCharacters = {
     {

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* missileguideTitle = "MISSILE GUIDE";
-int* missileguideDescription = "[Hold]\n Freeze";
+int* missileguideDescription = "[Hold] Freeze";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] missileguideCharacters = {{
     "      ",

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* tornadotwisterTitle = "TORNADO TWISTER";
-int* tornadotwisterDescription = "[Tap]\n Change direction\n[Hold]\n Shrink & slow down";
+int* tornadotwisterDescription = "[Tap] Change direction\n[Hold] Shrink & slow down";
 
 // Vircon32 port note: upstream's characters array is empty (only box() is
 // used to draw everything, no character() calls) - blank dummy entry,

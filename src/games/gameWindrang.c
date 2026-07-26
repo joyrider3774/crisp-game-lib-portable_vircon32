@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* windrangTitle = "WIND RANG";
-int* windrangDescription = "[Tap]\n Toggle wind";
+int* windrangDescription = "[Tap] Toggle wind";
 
 // Upstream's "b"/"e" glyphs only specify 5 rows; the 6th is added here as explicitly blank.
 int[5][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] windrangCharacters = {

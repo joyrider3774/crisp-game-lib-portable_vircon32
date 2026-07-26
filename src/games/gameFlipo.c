@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* flipoTitle = "FLIP O";
-int* flipoDescription = "[Tap]\n Flip";
+int* flipoDescription = "[Tap] Flip";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] flipoCharacters = {{
     "      ",

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* rollnropeTitle = "ROLLNROPE";
-int* rollnropeDescription = "[Tap]\n Jump / Run";
+int* rollnropeDescription = "[Tap] Jump / Run";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] rollnropeCharacters = {
     {

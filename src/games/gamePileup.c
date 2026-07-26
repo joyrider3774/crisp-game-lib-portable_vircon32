@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* pileupTitle = "PILEUP";
-int* pileupDescription = "[Slide]\n Move";
+int* pileupDescription = "[Slide] Move";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] pileupCharacters = {{
     "      ",

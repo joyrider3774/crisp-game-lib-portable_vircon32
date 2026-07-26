@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* slalomTitle = "SLALOM";
-int* slalomDescription = "[Hold]\n Turn";
+int* slalomDescription = "[Hold] Turn";
 
 // Vircon32 port note: upstream's characters array is empty (only
 // bar()/box()/line() are used, no character() calls) - blank dummy entry,

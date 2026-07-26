@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* spearainTitle = "SPEARAIN";
-int* spearainDescription = "[Hold]\n Slow";
+int* spearainDescription = "[Hold] Slow";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] spearainCharacters = {
     {

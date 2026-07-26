@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* slimestretcherTitle = "SLIME STRETCHER";
-int* slimestretcherDescription = "[Hold]\n Stretch\n[Release]\n Contract";
+int* slimestretcherDescription = "[Hold] Stretch\n[Release] Contract";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] slimestretcherCharacters = {{
     " llll ",

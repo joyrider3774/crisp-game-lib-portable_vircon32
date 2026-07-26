@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* froooogTitle = "FROOOOG";
-char* froooogDescription = "[Hold]\n Bend\n[Release]\n Jump";
+char* froooogDescription = "[Hold]    Bend\n[Release] Jump";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] froooogCharacters = {{
     "      ",

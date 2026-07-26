@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* gpressTitle = "G PRESS";
-int* gpressDescription = "[Tap]\n Press";
+int* gpressDescription = "[Tap] Press";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] gpressCharacters = {{
     "      ",

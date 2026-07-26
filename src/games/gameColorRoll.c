@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* colorrollTitle = "COLOR ROLL";
-char* colorrollDescription = "[Tap]\n Shoot";
+char* colorrollDescription = "[Tap] Shoot";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] colorrollCharacters = {{
     "      ",

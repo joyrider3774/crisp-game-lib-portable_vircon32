@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* podmigrationTitle = "POD MIGRATION";
-int* podmigrationDescription = "[Tap]\n Change direction";
+int* podmigrationDescription = "[Tap] Change direction";
 
 int[2][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] podmigrationCharacters = {
     {

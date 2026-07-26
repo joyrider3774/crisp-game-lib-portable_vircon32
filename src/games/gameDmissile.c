@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* dmissileTitle = "D MISSILE";
-int* dmissileDescription = "[Tap]\n Launch\n[Hold]\n Turn";
+int* dmissileDescription = "[Tap]  Launch\n[Hold] Turn";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] dmissileCharacters = {{
     "      ",

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* laserfortressTitle = "LASER FORTRESS";
-int* laserfortressDescription = "[Hold]\n Laser irradiation";
+int* laserfortressDescription = "[Hold] Laser irradiation";
 
 int[6][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] laserfortressCharacters = {
     {

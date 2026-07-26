@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* pulsepiperTitle = "PULSE PIPER";
-int* pulsepiperDescription = "[Hold]\n Charge";
+int* pulsepiperDescription = "[Hold] Charge";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] pulsepiperCharacters = {{
     "      ",

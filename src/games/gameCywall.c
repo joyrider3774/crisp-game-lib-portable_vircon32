@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* cywallTitle = "CYWALL";
-int* cywallDescription = "[Tap]\n Move";
+int* cywallDescription = "[Tap] Move";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] cywallCharacters = {{
     "      ",

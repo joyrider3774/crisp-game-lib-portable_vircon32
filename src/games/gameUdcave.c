@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* udcaveTitle = "UD CAVE";
-int* udcaveDescription = "[Hold]\n Go right";
+int* udcaveDescription = "[Hold] Go right";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] udcaveCharacters = {{
     " l    ",

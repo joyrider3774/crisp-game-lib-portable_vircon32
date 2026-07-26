@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* stormveilTitle = "STORMVEIL";
-int* stormveilDescription = "[Tap]\n Switch lane";
+int* stormveilDescription = "[Tap] Switch Lane";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] stormveilCharacters = {{
     "      ",

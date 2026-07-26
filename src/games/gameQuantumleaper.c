@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* quantumleaperTitle = "QUANTUM LEAPER";
-int* quantumleaperDescription = "[Tap]\nChange lane";
+int* quantumleaperDescription = "[Tap] Change lane";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] quantumleaperCharacters = {{
     "      ",

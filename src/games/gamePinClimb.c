@@ -21,7 +21,7 @@
 #include "../cglp.h"
 
 int* pinclimbTitle = "PIN CLIMB";
-int* pinclimbDescription = "[Hold]\n Stretch";
+int* pinclimbDescription = "[Hold] Stretch";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] pinclimbCharacters = {{
     "      ",

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* refbalsTitle = "REFBALS";
-int* refbalsDescription = "[Hold]\n Accel";
+int* refbalsDescription = "[Hold] Accel";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] refbalsCharacters = {{
     "      ",

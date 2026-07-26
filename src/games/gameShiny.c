@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* shinyTitle = "SHINY";
-int* shinyDescription = "[Hold]\n Rainy";
+int* shinyDescription = "[Hold] Rainy";
 
 int[6][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] shinyCharacters = {
     {

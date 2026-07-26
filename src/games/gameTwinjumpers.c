@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* twinjumpersTitle = "TWIN JUMPERS";
-int* twinjumpersDescription = "[Tap]\n Jump";
+int* twinjumpersDescription = "[Tap] Jump";
 
 // Vircon32 port note: character 'b' upstream is only 4 rows tall ("\n
 // gggg\ngggggg\ngggggg\ngg  gg\n") - the remaining 2 rows of the fixed

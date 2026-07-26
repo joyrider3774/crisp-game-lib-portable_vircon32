@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* pressmTitle = "PRESS M";
-int* pressmDescription = "[Slide]\n Move";
+int* pressmDescription = "[Slide] Move";
 
 int[2][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] pressmCharacters = {
     {

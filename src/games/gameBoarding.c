@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* boardingTitle = "BOARDING";
-int* boardingDescription = "[Hold]\n Boarding";
+int* boardingDescription = "[Hold] Boarding";
 
 int[8][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] boardingCharacters = {
     {

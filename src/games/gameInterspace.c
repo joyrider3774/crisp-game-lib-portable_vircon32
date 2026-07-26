@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* interspaceTitle = "INTERSPACE";
-int* interspaceDescription = "[Slide]\n Move";
+int* interspaceDescription = "[Slide] Move";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] interspaceCharacters = {{
     "      ",

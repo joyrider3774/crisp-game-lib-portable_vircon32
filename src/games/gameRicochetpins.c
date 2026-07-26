@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* ricochetpinsTitle = "RICOCHET PINS";
-int* ricochetpinsDescription = "[Tap]\n Shoot pins\n and recoil";
+int* ricochetpinsDescription = "[Tap] Shoot pins\nand recoil";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] ricochetpinsCharacters = {
     {

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* bridgecrossTitle = "BRIDGE CROSS";
-int* bridgecrossDescription = "[Hold]\n Jump";
+int* bridgecrossDescription = "[Hold] Jump";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] bridgecrossCharacters = {{
     "      ",

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* tappumpTitle = "TAPPUMP";
-int* tappumpDescription = "[Tap]\n Jump\n[Hold]\n Pump";
+int* tappumpDescription = "[Tap]  Jump\n[Hold] Pump";
 
 int[2][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] tappumpCharacters = {
     {

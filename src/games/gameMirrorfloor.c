@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* mirrorfloorTitle = "MIRROR FLOOR";
-int* mirrorfloorDescription = "[Tap]\n Jump\n[Hold]\n Speed up";
+int* mirrorfloorDescription = "[Tap]  Jump\n[Hold] Speed up";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] mirrorfloorCharacters = {
     {

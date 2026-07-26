@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* earockTitle = "EAROCK";
-int* earockDescription = "[Hold]\n Thrust\n[Tap]\n Turn";
+int* earockDescription = "[Hold] Thrust\n[Tap]  Turn";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] earockCharacters = {{
     "  ll  ",

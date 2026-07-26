@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* gtailTitle = "G TAIL";
-int* gtailDescription = "[Slide]\n Move";
+int* gtailDescription = "[Slide] Move";
 
 int[2][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] gtailCharacters = {
     {

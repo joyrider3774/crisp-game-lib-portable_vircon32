@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* skyraftsmanTitle = "SKY RAFTSMAN";
-int* skyraftsmanDescription = "[Tap]\n Jump";
+int* skyraftsmanDescription = "[Tap] Jump";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] skyraftsmanCharacters = {{
     "      ",

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* outpostpatrolTitle = "OUTPOST\nPATROL";
-int* outpostpatrolDescription = "[Tap]\n Jump";
+int* outpostpatrolDescription = "[Tap] Jump";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] outpostpatrolCharacters = {{
     "      ",

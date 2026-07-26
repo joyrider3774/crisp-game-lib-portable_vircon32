@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* dangoTitle = "DANGO";
-int* dangoDescription = "[Tap]\n Stretch";
+int* dangoDescription = "[Tap] Stretch";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] dangoCharacters = {{
     "      ",

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* gravitybubbleTitle = "GRAVITY BUBBLE";
-int* gravitybubbleDescription = "[Hold & Release]\n Place\n anti-gravity bubbles";
+int* gravitybubbleDescription = "[Hold & Release] \nPlace \n anti-gravity bubbles";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] gravitybubbleCharacters = {{
     "      ",

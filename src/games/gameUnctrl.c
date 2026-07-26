@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* unctrlTitle = "UNCTRL";
-int* unctrlDescription = "[Tap]\n Fire\n[Hold]\n Go up";
+int* unctrlDescription = "[Tap]  Fire\n[Hold] Go up";
 
 // The original sprites are 7px wide ("l ll ll" etc.); this engine's
 // CHARACTER_WIDTH is fixed at 6, so the first/last rows are truncated by

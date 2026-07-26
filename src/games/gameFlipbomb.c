@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* flipbombTitle = "FLIPBOMB";
-int* flipbombDescription = "[Tap]\n Flip";
+int* flipbombDescription = "[Tap] Flip";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] flipbombCharacters = {{
     "      ",

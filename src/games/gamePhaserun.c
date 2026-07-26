@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* phaserunTitle = "PHASERUN";
-int* phaserunDescription = "[Tap]\n Phase\n[Hold]\n Grow";
+int* phaserunDescription = "[Tap] Phase\n[Hold] Grow";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] phaserunCharacters = {{
     "      ",

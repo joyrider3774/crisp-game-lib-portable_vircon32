@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* fromtwosidesTitle = "FROM TWO SIDES";
-int* fromtwosidesDescription = "[Slide]\n Move";
+int* fromtwosidesDescription = "[Slide] Move";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] fromtwosidesCharacters = {
     {

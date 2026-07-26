@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* bladedancerTitle = "BLADE DANCER";
-int* bladedancerDescription = "[Tap]\n Jump & Slash";
+int* bladedancerDescription = "[Tap] Jump & Slash";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] bladedancerCharacters = {{
     "      ",

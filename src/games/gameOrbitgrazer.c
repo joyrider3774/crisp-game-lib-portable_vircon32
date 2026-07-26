@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* orbitgrazerTitle = "ORBIT GRAZER";
-int* orbitgrazerDescription = "[Tap]\n Reverse orbit";
+int* orbitgrazerDescription = "[Tap] Reverse orbit";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] orbitgrazerCharacters = {{
     "      ",

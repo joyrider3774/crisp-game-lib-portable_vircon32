@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* smokegTitle = "SMOKE G";
-int* smokegDescription = "[Tap]\n Smoke";
+int* smokegDescription = "[Tap] Smoke";
 
 int[4][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] smokegCharacters = {
     {

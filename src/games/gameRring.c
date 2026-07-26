@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* rringTitle = "R RING";
-int* rringDescription = "[Slide]\n Move";
+int* rringDescription = "[Slide] Move";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] rringCharacters = {
     {

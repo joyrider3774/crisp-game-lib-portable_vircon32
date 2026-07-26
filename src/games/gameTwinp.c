@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* twinpTitle = "TWIN P";
-int* twinpDescription = "[Hold]\n Stretch\n[Release]\n Pin";
+int* twinpDescription = "[Hold] Stretch\n[Release] Pin";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] twinpCharacters = {{
     "      ",

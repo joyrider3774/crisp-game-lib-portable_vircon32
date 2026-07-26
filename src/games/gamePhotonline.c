@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* photonlineTitle = "PHOTON LINE";
-int* photonlineDescription = "[Tap]\n Turn\n[Hold]\n Flick";
+int* photonlineDescription = "[Tap]  Turn\n[Hold] Flick";
 
 int[8][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] photonlineCharacters = {
     {

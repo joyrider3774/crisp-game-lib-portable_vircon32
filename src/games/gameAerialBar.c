@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* aerialbarTitle = "AERIAL BAR";
-char* aerialbarDescription = "[Tap]\n Jump\n[Hold]\n Fly";
+char* aerialbarDescription = "[Tap]  Jump\n[Hold] Fly";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] aerialbarCharacters = {{
     "      ",

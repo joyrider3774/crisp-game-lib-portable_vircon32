@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* marblebounceTitle = "MARBLE BOUNCE";
-int* marblebounceDescription = "[Tap]\n Bounce higher";
+int* marblebounceDescription = "[Tap] Bounce higher";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] marblebounceCharacters = {{
     "      ",

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* scaffoldTitle = "SCAFFOLD";
-int* scaffoldDescription = "[Tap]\n Change angle\n[Hold]\n Scaffold";
+int* scaffoldDescription = "[Tap]\n Change angle\n[Hold]\n Scaffold ";
 
 int[5][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] scaffoldCharacters = {
     {

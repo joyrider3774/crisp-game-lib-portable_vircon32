@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* darksortTitle = "DARK SORT";
-int* darksortDescription = "[Hold]\n Light gate";
+int* darksortDescription = "[Hold] Light gate";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] darksortCharacters = {{
     "      ",

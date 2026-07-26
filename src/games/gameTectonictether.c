@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* tectonictetherTitle = "TECTONIC TETHER";
-int* tectonictetherDescription = "[Hold]\n Charge & Retract\n[Release]\n Extend";
+int* tectonictetherDescription = "[Hold] Charge & Retract\n[Release] Extend";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] tectonictetherCharacters = {{
     "      ",

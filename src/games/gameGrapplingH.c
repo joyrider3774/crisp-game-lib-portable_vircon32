@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* grapplinghTitle = "GRAPPLING H";
-char* grapplinghDescription = "\n[Tap]\n Release hook\n Hold anchor";
+char* grapplinghDescription = "[Tap]\n Release hook\n Hold anchor";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] grapplinghCharacters = {{
     "      ",

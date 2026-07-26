@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* ttfenceTitle = "TT FENCE";
-int* ttfenceDescription = "[Tap]\n Place";
+int* ttfenceDescription = "[Tap] Place";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] ttfenceCharacters = {{
     "      ",

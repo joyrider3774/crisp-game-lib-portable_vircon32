@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* vbombTitle = "V BOMB";
-int* vbombDescription = "[Tap]\n Turn";
+int* vbombDescription = "[Tap] Turn";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] vbombCharacters = {
     {

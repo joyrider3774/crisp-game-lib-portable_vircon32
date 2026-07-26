@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* windpowerTitle = "WIND POWER";
-int* windpowerDescription = "[Hold]\n Blow air";
+int* windpowerDescription = "[Hold] Blow air";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] windpowerCharacters = {{
     "      ",

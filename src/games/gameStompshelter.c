@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* stompshelterTitle = "STOMPSHELTER";
-int* stompshelterDescription = "[Tap]\n Double jump\n[Hold]\n Slide";
+int* stompshelterDescription = "[Tap] Double Jump\n[Hold] Slide";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] stompshelterCharacters = {{
     "      ",

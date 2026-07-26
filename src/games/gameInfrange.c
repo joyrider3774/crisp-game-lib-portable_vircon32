@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* infrangeTitle = "INF RANGE";
-int* infrangeDescription = "[Tap]\n Turn 90\n[Hold]\n Turn slow";
+int* infrangeDescription = "[Tap]  Turn 90\n[Hold] Turn slow";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] infrangeCharacters = {{
     "      ",

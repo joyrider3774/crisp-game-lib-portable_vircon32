@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
-int* magneticpendulumTitle = "MAGNETIC PENDULUM";
-int* magneticpendulumDescription = "[Hold]\n Shorten rope\nCollect falling magnets";
+int* magneticpendulumTitle = "MAGNETIC\nPENDULUM";
+int* magneticpendulumDescription = "[Hold] Shorten rope\nCollect falling magnets";
 
 // Sprites trimmed from upstream's 8/7 rows to this engine's fixed 6-row grid.
 int[2][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] magneticpendulumCharacters = {

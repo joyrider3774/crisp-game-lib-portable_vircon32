@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* doshinTitle = "DOSHIN";
-int* doshinDescription = "[Tap]\n Press";
+int* doshinDescription = "[Tap] Press";
 
 int[4][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] doshinCharacters = {
     {

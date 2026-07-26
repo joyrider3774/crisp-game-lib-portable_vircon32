@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* embattledTitle = "EMBATTLED";
-int* embattledDescription = "[Tap]\n Turn\n[Hold]\n Defense";
+int* embattledDescription = "[Tap]  Turn\n[Hold] Defense";
 
 int[2][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] embattledCharacters = {
     {

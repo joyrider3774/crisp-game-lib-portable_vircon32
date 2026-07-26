@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* paintballTitle = "PAINT BALL";
-int* paintballDescription = "[Tap]\n Throw";
+int* paintballDescription = "[Tap] Throw";
 
 // Vircon32 port note: drawn with color=BLACK, activating this engine's
 // per-pixel multi-color glyph rendering (see gameCount.c's port note and

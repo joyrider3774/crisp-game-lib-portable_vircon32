@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* skyfloorTitle = "SKY FLOOR";
-int* skyfloorDescription = "[Slide]\n Move";
+int* skyfloorDescription = "[Slide] Move";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] skyfloorCharacters = {{
     "      ",

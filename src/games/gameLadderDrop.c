@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* ladderdropTitle = "LADDER DROP";
-char* ladderdropDescription = "[Tap]\n Drop";
+char* ladderdropDescription = "[Tap] Drop";
 
 int[9][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] ladderdropCharacters = {
     {

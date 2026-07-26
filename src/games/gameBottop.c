@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* bottopTitle = "BOTTOP";
-int* bottopDescription = "[Tap]\n Jump\n[Hold]\n Fly";
+int* bottopDescription = "[Tap]  Jump\n[Hold] Fly";
 
 int[4][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] bottopCharacters = {
     {

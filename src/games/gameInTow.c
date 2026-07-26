@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* intowTitle = "IN TOW";
-char* intowDescription = "[Tap]\n Multiple jumps";
+char* intowDescription = "[Tap] Multiple jumps";
 
 int[4][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] intowCharacters = {
     {

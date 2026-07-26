@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* switchboardTitle = "SWITCHBOARD";
-int* switchboardDescription = "[Hold]\n Connect calls";
+int* switchboardDescription = "[Hold] Connect calls";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] switchboardCharacters = {{
     "      ",

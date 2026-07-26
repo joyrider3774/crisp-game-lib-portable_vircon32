@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* bsfishTitle = "BS FISH";
-char* bsfishDescription = "[Hold]\n Speed up";
+char* bsfishDescription = "[Hold] Speed up";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] bsfishCharacters = {
     {   // Fish 'a'

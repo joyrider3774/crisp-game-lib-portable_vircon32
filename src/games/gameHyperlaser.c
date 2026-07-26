@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* hyperlaserTitle = "HYPER LASER";
-int* hyperlaserDescription = "[Hold]\n Laser";
+int* hyperlaserDescription = "[Hold] Laser";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] hyperlaserCharacters = {
     {

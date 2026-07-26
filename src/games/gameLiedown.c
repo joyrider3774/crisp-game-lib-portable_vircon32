@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* liedownTitle = "LIE DOWN";
-int* liedownDescription = "[Hold]\n Lie down";
+int* liedownDescription = "[Hold] Lie down";
 
 int[6][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] liedownCharacters = {
     {

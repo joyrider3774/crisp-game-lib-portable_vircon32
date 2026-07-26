@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* rebirthTitle = "REBIRTH";
-int* rebirthDescription = "[Tap]\n Jump / Land";
+int* rebirthDescription = "[Tap] Jump / Land";
 
 int[7][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] rebirthCharacters = {
     {

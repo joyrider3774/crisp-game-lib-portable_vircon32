@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* survivorTitle = "SURVIVOR";
-char* survivorDescription = "[Tap]\n Jump";
+char* survivorDescription = "[Tap] Jump";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] survivorCharacters = {
     {

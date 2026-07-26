@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* findastarTitle = "FIND A STAR";
-int* findastarDescription = "[Tap]\n Open";
+int* findastarDescription = "[Tap] Open";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] findastarCharacters = {
     {

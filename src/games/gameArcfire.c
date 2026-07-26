@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* arcfireTitle = "ARCFIRE";
-int* arcfireDescription = "[Hold]\n Set arc\n[Release]\n Fire";
+int* arcfireDescription = "[Hold]\n  Set arc\n[Release]\n  Fire";
 
 int[5][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] arcfireCharacters = {
     {

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* rotatingtunnelTitle = "ROTATING TUNNEL";
-int* rotatingtunnelDescription = "[Hold]\n Move outward\n[Release]\n Move inward";
+int* rotatingtunnelDescription = "[Hold] Move outward\n[Release] Move inward";
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] rotatingtunnelCharacters = {{
     "      ",
     "      ",

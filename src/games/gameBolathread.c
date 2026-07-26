@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* bolathreadTitle = "BOLA THREAD";
-int* bolathreadDescription = "[Hold]\n Contract\n[Release]\n Expand";
+int* bolathreadDescription = "[Hold] Contract\n[Release] Expand";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] bolathreadCharacters = {{
     "      ",

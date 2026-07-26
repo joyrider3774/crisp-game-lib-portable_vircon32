@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* blockstackerTitle = "BLOCK STACKER";
-int* blockstackerDescription = "[Tap]\n Release block";
+int* blockstackerDescription = "[Tap] Release block";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] blockstackerCharacters = {{
     "      ",

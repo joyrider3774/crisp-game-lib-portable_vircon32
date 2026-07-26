@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* sunflowerswayTitle = "SUNFLOWER SWAY";
-int* sunflowerswayDescription = "[Hold]\n Sunny";
+int* sunflowerswayDescription = "[Hold] Sunny";
 
 int[5][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] sunflowerswayCharacters = {
     {

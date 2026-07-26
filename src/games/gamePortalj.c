@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* portaljTitle = "PORTAL J";
-int* portaljDescription = "[Tap]\n Portal jump";
+int* portaljDescription = "[Tap] Portal jump";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] portaljCharacters = {{
     "      ",

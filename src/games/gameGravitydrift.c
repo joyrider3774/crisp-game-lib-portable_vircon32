@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* gravitydriftTitle = "GRAVITY DRIFT";
-int* gravitydriftDescription = "[Hold]\n Thrust up";
+int* gravitydriftDescription = "[Hold] Thrust up";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] gravitydriftCharacters = {{
     " llll ",

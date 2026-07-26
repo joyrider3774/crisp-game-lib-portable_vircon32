@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* meteoplanetTitle = "METEO PLANET";
-int* meteoplanetDescription = "[Tap]\n Move";
+int* meteoplanetDescription = "[Tap] Move";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] meteoplanetCharacters = {
     {

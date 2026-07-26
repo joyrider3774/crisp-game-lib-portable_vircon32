@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* pillars3dTitle = "PILLARS 3D";
-int* pillars3dDescription = "[Slide]\n Move";
+int* pillars3dDescription = "[Slide] Move";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] pillars3dCharacters = {{
     "      ",

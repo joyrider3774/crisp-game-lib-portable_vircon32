@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* golfmeTitle = "GOLFME";
-int* golfmeDescription = "[Hold]\n Change angle\n[Release]\n Jump";
+int* golfmeDescription = "[Hold]    Change angle\n[Release] Jump";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] golfmeCharacters = {{
     "      ",

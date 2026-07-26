@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* jujumpTitle = "JUJUMP";
-int* jujumpDescription = "[Press]\n Jump";
+int* jujumpDescription = "[Press] Jump";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] jujumpCharacters = {{
     "      ",

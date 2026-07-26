@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* tarutobiTitle = "TARUTOBI";
-int* tarutobiDescription = "[Slide]\n Move";
+int* tarutobiDescription = "[Slide] Move";
 
 // Vircon32 port note: upstream's raw template-literal strings each carry a
 // trailing indentation-only line (whatever whitespace preceded the closing

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* cleanroboTitle = "CLEAN ROBO";
-int* cleanroboDescription = "[Hold]\n Speed up";
+int* cleanroboDescription = "[Hold] Speed up";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] cleanroboCharacters = {{
     "      ",

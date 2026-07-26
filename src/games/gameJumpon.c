@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* jumponTitle = "JUMP ON";
-int* jumponDescription = "[Tap]\n Jump on";
+int* jumponDescription = "[Tap] Jump on";
 
 int[12][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] jumponCharacters = {
     {

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* thunderTitle = "THUNDER";
-char* thunderDescription = "[Tap]\n Turn\n[Arrow]\n Move";
+char* thunderDescription = "[Tap]   Turn\n[Arrow] Move";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] thunderCharacters = {
     {

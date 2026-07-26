@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* totogeTitle = "TOTOGE";
-int* totogeDescription = "[Tap]\n Jump";
+int* totogeDescription = "[Tap] Jump";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] totogeCharacters = {
     {

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* cleanerTitle = "CLEANER";
-int* cleanerDescription = "[Hold]\n Sweep";
+int* cleanerDescription = "[Hold] Sweep";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] cleanerCharacters = {{
     "      ",

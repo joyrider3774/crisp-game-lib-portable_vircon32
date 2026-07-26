@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* numberlineTitle = "NUMBER LINE";
-int* numberlineDescription = "[Tap]\n Sum";
+int* numberlineDescription = "[Tap] Sum";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] numberlineCharacters = {{
     "      ",

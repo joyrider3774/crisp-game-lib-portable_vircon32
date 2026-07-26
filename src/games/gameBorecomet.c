@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* borecometTitle = "BORE COMET";
-int* borecometDescription = "[Hold]\n Drill thrust\n[Release]\n Fall";
+int* borecometDescription = "[Hold] Drill thrust\n[Release] Fall";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] borecometCharacters = {{
     "      ",

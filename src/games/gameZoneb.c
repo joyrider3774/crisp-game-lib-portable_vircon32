@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* zonebTitle = "ZONE B";
-int* zonebDescription = "[Tap]\n Turn\n[Hold]\n Shot";
+int* zonebDescription = "[Tap]  Turn\n[Hold] Shot";
 
 int[4][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] zonebCharacters = {
     {

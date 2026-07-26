@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* pairsdropTitle = "PAIRS DROP";
-int* pairsdropDescription = "[Tap]\n Open";
+int* pairsdropDescription = "[Tap] Open";
 
 int[2][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] pairsdropCharacters = {
     {

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* kitemasterTitle = "KITE MASTER";
-int* kitemasterDescription = "[Hold]\n Pull string\n Catch clouds with kite";
+int* kitemasterDescription = "[Hold]\n Pull string\nCatch clouds with kite";
 
 int[2][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] kitemasterCharacters = {
     {

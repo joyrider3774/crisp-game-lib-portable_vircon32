@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* pulsestreamTitle = "PULSE STREAM";
-int* pulsestreamDescription = "[Tap]\n Push back\n drifting objects.\n Don't lose 3 lanes!";
+int* pulsestreamDescription = "[Tap] Push back \ndrifting objects.\nDon't lose 3 lanes!";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] pulsestreamCharacters = {{
     "      ",

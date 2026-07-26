@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* gravitywellTitle = "GRAVITY WELL";
-int* gravitywellDescription = "[Tap]\n Anti Gravity Pulse";
+int* gravitywellDescription = "[Tap] Anti Gravity Pulse";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] gravitywellCharacters = {{
     "      ",

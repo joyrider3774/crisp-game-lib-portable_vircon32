@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* numberballTitle = "NUMBER BALL";
-int* numberballDescription = "[Hold]\n Set angle\n[Release]\n Hit a shot";
+int* numberballDescription = "[Hold]    Set angle\n[Release] Hit a shot";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] numberballCharacters = {{
     "      ",

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* growthTitle = "GROWTH";
-int* growthDescription = "[Hold]\n Growth";
+int* growthDescription = "[Hold] Growth";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] growthCharacters = {{
     "      ",

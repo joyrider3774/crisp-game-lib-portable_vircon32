@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* tlaserTitle = "T LASER";
-int* tlaserDescription = "[D-Pad]\n Move sight";
+int* tlaserDescription = "[Slide]\n Move sight";
 
 int[2][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] tlaserCharacters = {
     {

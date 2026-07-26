@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* jpaddleTitle = "JPADDLE";
-int* jpaddleDescription = "[Tap]\n Jump/Turn\n[Hold]\n Move";
+int* jpaddleDescription = "[Tap]  Jump/Turn\n[Hold] Move";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] jpaddleCharacters = {{
     "      ",

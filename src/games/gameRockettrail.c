@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* rockettrailTitle = "ROCKET TRAIL";
-int* rockettrailDescription = "[Hold]\n Thrust & destroy";
+int* rockettrailDescription = "[Hold] Thrust & Destroy";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] rockettrailCharacters = {{
     "      ",

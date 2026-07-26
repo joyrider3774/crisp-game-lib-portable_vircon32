@@ -2,7 +2,7 @@
 
 char* castnTitle = "CAST N";
 char* castnDescription =
-    "[Hold]\n Select power\n[Release]\n Cast\n[Tap]\n Pull";
+    "[Hold]    Select power\n[Release] Cast\n[Tap]     Pull";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] castnCharacters = {
     {

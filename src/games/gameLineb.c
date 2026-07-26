@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* linebTitle = "LINE B";
-int* linebDescription = "[Tap]\n Grow";
+int* linebDescription = "[Tap] Grow";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] linebCharacters = {{
     "      ",

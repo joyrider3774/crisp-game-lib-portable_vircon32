@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* catapultTitle = "CATAPULT";
-char* catapultDescription = "[Tap]\n Throw";
+char* catapultDescription = "[Tap] Throw";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] catapultCharacters = {{
     "      ",

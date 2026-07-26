@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* blastbuoyTitle = "BLAST BUOY";
-int* blastbuoyDescription = "[Hold]\n Sink\n[Release]\n Float";
+int* blastbuoyDescription = "[Hold] Sink\n[Release] Float";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] blastbuoyCharacters = {{
     "      ",

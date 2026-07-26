@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* hoppingpTitle = "HOPPING P";
-int* hoppingpDescription = "[Tap]\n Turn";
+int* hoppingpDescription = "[Tap] Turn";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] hoppingpCharacters = {{
     "      ",

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* stageseparationTitle = "STAGE SEPARATION";
-int* stageseparationDescription = "[Tap]\n Staging";
+int* stageseparationDescription = "[Tap] Staging";
 
 // This game never calls char()/text() - no custom character patterns
 // needed, following the same "single blank placeholder" convention as

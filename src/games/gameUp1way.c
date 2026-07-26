@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* up1wayTitle = "UP 1 WAY";
-int* up1wayDescription = "[Tap]\n Go up";
+int* up1wayDescription = "[Tap] Go up";
 
 int[8][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] up1wayCharacters = {
     {

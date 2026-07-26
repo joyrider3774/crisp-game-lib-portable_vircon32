@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* turtletideTitle = "TURTLE TIDE";
-int* turtletideDescription = "[Hold]\n Dive & Speed up";
+int* turtletideDescription = "[Hold] Dive & Speed up";
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] turtletideCharacters = {{
     "      ",
     "      ",

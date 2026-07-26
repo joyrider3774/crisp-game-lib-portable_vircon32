@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* orbitmanTitle = "ORBIT MAN";
-int* orbitmanDescription = "[Tap]\n Launch";
+int* orbitmanDescription = "[Tap] Launch";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] orbitmanCharacters = {{
     "      ",

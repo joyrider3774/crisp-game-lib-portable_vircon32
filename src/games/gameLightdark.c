@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* lightdarkTitle = "LIGHT DARK";
-int* lightdarkDescription = "[Tap]\n Jump\n[Hold]\n Fly";
+int* lightdarkDescription = "[Tap] Jump\n[Hold] Fly";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] lightdarkCharacters = {
     {

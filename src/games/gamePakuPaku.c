@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* pakupakuTitle = "PAKU PAKU";
-char* pakupakuDescription = "[Tap]\n Turn\n[Arrow]\n Move";
+char* pakupakuDescription = "[Tap]   Turn\n[Arrow] Move";
 
 int[10][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] pakupakuCharacters = {
     {

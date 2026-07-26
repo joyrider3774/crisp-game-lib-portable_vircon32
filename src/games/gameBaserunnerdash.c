@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* baserunnerdashTitle = "BASERUNNER DASH";
-int* baserunnerdashDescription = "[Hold]\n Run forward\n[Release]\n Run back";
+int* baserunnerdashDescription = "[Hold] Run forward\n[Release] Run back";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] baserunnerdashCharacters = {{
     "      ",

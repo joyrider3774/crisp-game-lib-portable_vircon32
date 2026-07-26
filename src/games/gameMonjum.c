@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* monjumTitle = "MONJUM";
-int* monjumDescription = "   [Hold]\n Back\n[Release]\n Jump";
+int* monjumDescription = "[Hold] Back\n[Release] Jump";
 
 int[4][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] monjumCharacters = {
     {

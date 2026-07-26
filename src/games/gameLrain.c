@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* lrainTitle = "L RAIN";
-int* lrainDescription = "[Slide]\n Move";
+int* lrainDescription = "[Slide] Move";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] lrainCharacters = {{
     "  ll  ",

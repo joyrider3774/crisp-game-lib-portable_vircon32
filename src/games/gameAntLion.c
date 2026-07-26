@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* antlionTitle = "ANT LION";
-char* antlionDescription = "[Hold]\n Walk";
+char* antlionDescription = "[Hold] Walk";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] antlionCharacters = {
     {

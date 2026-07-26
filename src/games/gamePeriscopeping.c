@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* periscopepingTitle = "PERISCOPE PING";
-int* periscopepingDescription = "[Hold]\nPing\n[Tap]\nFire & Turn";
+int* periscopepingDescription = "[Hold] Ping\n[Tap]  Fire & Turn";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] periscopepingCharacters = {{
     "      ",

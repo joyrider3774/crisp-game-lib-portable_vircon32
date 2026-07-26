@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* updownpressTitle = "UP DOWN PRESS";
-int* updownpressDescription = "[Tap]\n Jump\n[Hold]\n Speed up";
+int* updownpressDescription = "[Tap]  Jump\n[Hold] Speed up";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] updownpressCharacters = {{
     "      ",

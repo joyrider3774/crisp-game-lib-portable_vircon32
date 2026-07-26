@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* islashTitle = "I SLASH";
-int* islashDescription = "[Hold]\n Slash";
+int* islashDescription = "[Hold] Slash";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] islashCharacters = {
     {

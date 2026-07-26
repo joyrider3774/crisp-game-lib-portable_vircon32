@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* wiperTitle = "WIPER";
-int* wiperDescription = "[Tap]\n Swing";
+int* wiperDescription = "[Tap] Swing";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] wiperCharacters = {{
     "      ",

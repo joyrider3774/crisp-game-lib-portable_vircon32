@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* dfightTitle = "D FIGHT";
-char* dfightDescription = "[Slide]\n Move";
+char* dfightDescription = "[Slide] Move";
 
 int[4][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] dfightCharacters = {
     {

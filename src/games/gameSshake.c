@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* sshakeTitle = "S SHAKE";
-int* sshakeDescription = "[Tap]\n Shake";
+int* sshakeDescription = "[Tap] Shake";
 
 int[2][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] sshakeCharacters = {
     {

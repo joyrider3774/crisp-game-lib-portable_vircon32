@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* thrustlrTitle = "THRUST LR";
-int* thrustlrDescription = "[Slide]\n Thrust";
+int* thrustlrDescription = "[Slide] Thrust";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] thrustlrCharacters = {{
     "      ",

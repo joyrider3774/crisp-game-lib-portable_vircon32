@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* twolaneTitle = "TWO LANE";
-int* twolaneDescription = "[Tap]\n Change Lane\n[Hold]\n Accel";
+int* twolaneDescription = "[Tap]\n Change Lane\n[Hold] \n Accel";
 
 int[2][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] twolaneCharacters = {
     {

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* wavybirdTitle = "WAVY BIRD";
-int* wavybirdDescription = "[Tap]\n Flap";
+int* wavybirdDescription = "[Tap] Flap";
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] wavybirdCharacters = {{
     "      ",
     "      ",

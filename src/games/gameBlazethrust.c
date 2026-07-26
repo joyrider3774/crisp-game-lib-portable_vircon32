@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* blazethrustTitle = "BLAZE THRUST";
-int* blazethrustDescription = "[Hold]\n Thrust upward";
+int* blazethrustDescription = "[Hold] Thrust upward";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] blazethrustCharacters = {{
     "      ",

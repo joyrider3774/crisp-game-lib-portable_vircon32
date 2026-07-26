@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* ballsbombsTitle = "BALLS BOMBS";
-char* ballsbombsDescription = "[Hold]\n Walk";
+char* ballsbombsDescription = "[Hold] Walk";
 
 int[8][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] ballsbombsCharacters = {
     {

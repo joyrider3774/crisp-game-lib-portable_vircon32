@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* fishgrillTitle = "FISH GRILL";
-int* fishgrillDescription = "[Hold]\n Burn up";
+int* fishgrillDescription = "[Hold] Burn up";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] fishgrillCharacters = {{
     "  l   ",

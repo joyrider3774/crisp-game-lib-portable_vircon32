@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* inkinhTitle = "INKINH";
-int* inkinhDescription = "[Hold]\n Thrust & Inhale";
+int* inkinhDescription = "[Hold] Thrust & Inhale";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] inkinhCharacters = {{
     "      ",

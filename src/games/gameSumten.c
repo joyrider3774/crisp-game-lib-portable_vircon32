@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* sumtenTitle = "SUM TEN";
-int* sumtenDescription = "[Tap]\n Forward";
+int* sumtenDescription = "[Tap] Forward";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] sumtenCharacters = {{
     "      ",

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* ghosthopTitle = "GHOST HOP";
-int* ghosthopDescription = "[Tap]\n Hop";
+int* ghosthopDescription = "[Tap] Hop";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] ghosthopCharacters = {{
     "      ",

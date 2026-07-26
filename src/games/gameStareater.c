@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* stareaterTitle = "STAR EATER";
-int* stareaterDescription = "[Hold]\n Charge\n[Release]\n Blast";
+int* stareaterDescription = "[Hold] Charge\n[Release] Blast";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] stareaterCharacters = {{
     "      ",

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* jugglingactTitle = "JUGGLING ACT";
-int* jugglingactDescription = "[Hold]\n Throw ball back\n[Release]\n Move";
+int* jugglingactDescription = "[Hold] Throw ball back\n[Release] Move";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] jugglingactCharacters = {{
     "  lll ",

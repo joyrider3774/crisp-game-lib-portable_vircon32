@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* ropecorralTitle = "ROPE CORRAL";
-int* ropecorralDescription = "[Hold]\n Anchor & swing\n[Release]\n Roll on";
+int* ropecorralDescription = "[Hold] Anchor & swing\n[Release] Roll on";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] ropecorralCharacters = {{
     "      ",

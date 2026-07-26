@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* tapejTitle = "TAPE J";
-int* tapejDescription = "[Hold]\n Pull\n[Release]\n Release";
+int* tapejDescription = "[Hold]    Pull\n[Release] Release";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] tapejCharacters = {{
     "      ",

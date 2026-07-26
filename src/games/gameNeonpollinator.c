@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* neonpollinatorTitle = "NEON POLLINATOR";
-int* neonpollinatorDescription = "[Hold]\n Glow & Rise";
+int* neonpollinatorDescription = "[Hold] Glow & Rise";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] neonpollinatorCharacters = {{
     "      ",

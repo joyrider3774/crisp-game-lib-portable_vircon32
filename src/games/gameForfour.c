@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* forfourTitle = "FORFOUR";
-int* forfourDescription = "[Tap]\n Roll";
+int* forfourDescription = "[Tap] Roll";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] forfourCharacters = {{
     " llll ",

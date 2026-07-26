@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* jetstreamTitle = "JET STREAM";
-int* jetstreamDescription = "[Tap]\n Cycle lanes";
+int* jetstreamDescription = "[Tap] Cycle Lanes";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] jetstreamCharacters = {
     {

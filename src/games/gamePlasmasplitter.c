@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* plasmasplitterTitle = "PLASMA SPLITTER";
-int* plasmasplitterDescription = "[Hold]\n Stop";
+int* plasmasplitterDescription = "[Hold] Stop";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] plasmasplitterCharacters = {{
     "      ",

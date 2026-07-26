@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* kelpclimberTitle = "KELP CLIMBER";
-int* kelpclimberDescription = "[Tap]\n Grab kelp";
+int* kelpclimberDescription = "[Tap] Grab kelp";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] kelpclimberCharacters = {{
     "      ",

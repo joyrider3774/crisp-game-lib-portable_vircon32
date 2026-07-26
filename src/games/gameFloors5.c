@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* floors5Title = "FLOORS 5";
-int* floors5Description = "[Tap]\n Jump / Double Jump\n[Hold]\n Fly";
+int* floors5Description = "[Tap]  Jump / Double Jump\n[Hold] Fly";
 
 int[4][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] floors5Characters = {
     {

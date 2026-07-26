@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* rotationrodTitle = "ROTATION ROD";
-int* rotationrodDescription = "[Tap]\n Turn";
+int* rotationrodDescription = "[Tap] Turn";
 
 // Vircon32 port note: upstream's characters array is empty (this game draws
 // only bar()/box()/line()/text(), never character()) - a single blank dummy

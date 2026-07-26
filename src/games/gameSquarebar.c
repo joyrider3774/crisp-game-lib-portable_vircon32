@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* squarebarTitle = "SQUARE BAR";
-int* squarebarDescription = "[Hold]\n Grow";
+int* squarebarDescription = "[Hold] Grow";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] squarebarCharacters = {{
     "      ",

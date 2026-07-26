@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* grenadierTitle = "GRENADIER";
-int* grenadierDescription = "[Tap]\n Climb out\n[Hold]\n Throw";
+int* grenadierDescription = "[Tap]  Climb out\n[Hold] Throw";
 
 int[6][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] grenadierCharacters = {
     {

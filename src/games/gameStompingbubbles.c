@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
-int* stompingbubblesTitle = "STOMPING\nBUBBLES\n";
-int* stompingbubblesDescription = "[Hold]\n Stomp";
+int* stompingbubblesTitle = "STOMPING\nBUBBLES";
+int* stompingbubblesDescription = "[Hold] Stomp";
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] stompingbubblesCharacters = {{
     "      ",
     "      ",

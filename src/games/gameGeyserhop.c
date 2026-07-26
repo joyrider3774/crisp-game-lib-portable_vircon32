@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* geyserhopTitle = "GEYSER HOP";
-int* geyserhopDescription = "[Hold]\n Rise\n Stomp geysers!";
+int* geyserhopDescription = "[Hold] Rise\nStomp geysers!";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] geyserhopCharacters = {{
     "      ",

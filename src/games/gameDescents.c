@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* descentsTitle = "DESCENT S";
-char* descentsDescription = "[Hold]\n Thrust up";
+char* descentsDescription = "[Hold] Thrust up";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] descentsCharacters = {
     {

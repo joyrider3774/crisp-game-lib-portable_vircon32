@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* hoardspoutTitle = "HOARD SPOUT";
-int* hoardspoutDescription = "Gather same color sparks\n[Hold]\n Thrust";
+int* hoardspoutDescription = "Gather same color sparks\n[Hold] Thrust";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] hoardspoutCharacters = {{
     "      ",

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* spincellTitle = "SPIN CELL";
-int* spincellDescription = "[Tap]\n Rotate the cell";
+int* spincellDescription = "[Tap] Rotate the cell";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] spincellCharacters = {{
     "      ",

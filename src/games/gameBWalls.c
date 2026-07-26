@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* bwallsTitle = "B WALLS";
-char* bwallsDescription = "[Tap]\n Shoot";
+char* bwallsDescription = "[Tap] Shoot";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] bwallsCharacters = {
     {   // Player 'a'

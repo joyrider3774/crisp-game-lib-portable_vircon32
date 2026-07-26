@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* tpunchTitle = "T PUNCH";
-int* tpunchDescription = "[Tap]\n Punch\n[Hold]\n Roll";
+int* tpunchDescription = "[Tap]  Punch\n[Hold] Roll";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] tpunchCharacters = {
     {

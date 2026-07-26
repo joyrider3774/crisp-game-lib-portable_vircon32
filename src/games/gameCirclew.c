@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* circlewTitle = "CIRCLE W";
-int* circlewDescription = "[Hold]\n Expand";
+int* circlewDescription = "[Hold] Expand";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] circlewCharacters = {{
     "      ",

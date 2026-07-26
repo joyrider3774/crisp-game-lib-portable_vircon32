@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* recoilradarTitle = "RECOIL RADAR";
-int* recoilradarDescription = "[Hold]\n Charge Scan\n[Release]\n Fire + Recoil";
+int* recoilradarDescription = "[Hold] Charge Scan\n[Release] Fire + Recoil";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] recoilradarCharacters = {{
     "      ",

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* counterbTitle = "COUNTER B";
-char* counterbDescription = "[Hold]\n Beam";
+char* counterbDescription = "[Hold] Beam";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] counterbCharacters = {{
     "      ",

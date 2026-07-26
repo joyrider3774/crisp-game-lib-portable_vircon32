@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* marusansiTitle = "MARUSANSI";
-int* marusansiDescription = "   Tap\nto start";
+int* marusansiDescription = "Tap\nto start";
 
 int[8][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] marusansiCharacters = {
     {

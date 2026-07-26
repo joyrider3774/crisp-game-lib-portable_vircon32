@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* catchingwheelTitle = "CATCHING WHEEL";
-int* catchingwheelDescription = "[Hold]\n Rotate wheel";
+int* catchingwheelDescription = "[Hold] Rotate wheel";
 
 int[2][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] catchingwheelCharacters = {
     {

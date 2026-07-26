@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* bargehopTitle = "BARGE HOP";
-int* bargehopDescription = "[Tap]\n Jump\n[Hold]\n Reduce gravity";
+int* bargehopDescription = "[Tap]  Jump\n[Hold] Reduce gravity";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] bargehopCharacters = {{
     "      ",

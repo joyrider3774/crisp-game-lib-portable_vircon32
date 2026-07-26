@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* chalkboardTitle = "CHALKBOARD";
-int* chalkboardDescription = "[Hold]\n Write\n[Release]\n Save\n Overwriting costs a lot";
+int* chalkboardDescription = "[Hold]    Write\n[Release] Save\nOverwriting costs a lot";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] chalkboardCharacters = {{
     "      ",

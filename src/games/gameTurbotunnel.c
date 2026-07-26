@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* turbotunnelTitle = "TURBO TUNNEL";
-int* turbotunnelDescription = "[Tap]\n Turn";
+int* turbotunnelDescription = "[Tap] Turn";
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] turbotunnelCharacters = {{
     "      ",
     "      ",

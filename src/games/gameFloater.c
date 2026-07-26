@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* floaterTitle = "FLOATER";
-int* floaterDescription = "[Tap]\n Jump\n[Hold]\n Fly";
+int* floaterDescription = "[Tap] Jump\n[Hold] Fly";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] floaterCharacters = {{
     "      ",

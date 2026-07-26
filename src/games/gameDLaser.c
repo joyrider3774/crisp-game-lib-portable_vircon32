@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 char* dlaserTitle = "D LASER";
-char* dlaserDescription = "[Tap]\n Turn\n[Hold]\n Stop";
+char* dlaserDescription = "[Tap]  Turn\n[Hold] Stop";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] dlaserCharacters = {{
     " ll   ",

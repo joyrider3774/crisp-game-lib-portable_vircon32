@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* geoeraseTitle = "GEOERASE";
-int* geoeraseDescription = "[Hold]\n Mark\n[Release]\n Erase";
+int* geoeraseDescription = "[Hold] Mark\n[Release] Erase";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] geoeraseCharacters = {{
     "      ",

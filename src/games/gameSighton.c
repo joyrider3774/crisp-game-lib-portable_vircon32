@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* sightonTitle = "SIGHT ON";
-int* sightonDescription = "[Tap]\n Fire";
+int* sightonDescription = "[Tap] Fire";
 
 int[2][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] sightonCharacters = {
     {

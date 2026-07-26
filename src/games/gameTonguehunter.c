@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* tonguehunterTitle = "TONGUE HUNTER";
-int* tonguehunterDescription = "[Hold]\n Extend tongue";
+int* tonguehunterDescription = "[Hold] Extend tongue";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] tonguehunterCharacters = {{
     " llll ",

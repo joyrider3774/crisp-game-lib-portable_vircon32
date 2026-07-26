@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* windowwasherTitle = "WINDOW WASHER";
-int* windowwasherDescription = "[Hold]\n Ascend\n[Release]\n Descend\nClean windows!";
+int* windowwasherDescription = "[Hold] Ascend\n[Release] Descend\nClean windows!";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] windowwasherCharacters = {{
     "  ll  ",

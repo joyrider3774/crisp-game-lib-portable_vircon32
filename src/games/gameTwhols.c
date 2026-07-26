@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* twholsTitle = "TWHOLS";
-int* twholsDescription = "[Press]\n Turn";
+int* twholsDescription = "[Press] Turn";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] twholsCharacters = {{
     "      ",

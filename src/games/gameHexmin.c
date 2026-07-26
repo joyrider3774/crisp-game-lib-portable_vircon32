@@ -4,7 +4,7 @@
 #include "../cglp.h"
 
 char* hexminTitle = "HEXMIN";
-char* hexminDescription = "[Tap]\n Roll\n[Arrow]\n Move";
+char* hexminDescription = "[Tap]   Roll\n[Arrow] Move";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] hexminCharacters = {{
     "      ",

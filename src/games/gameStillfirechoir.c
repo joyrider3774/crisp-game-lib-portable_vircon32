@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* stillfirechoirTitle = "STILLFIRE CHOIR";
-int* stillfirechoirDescription = "[Hold]\n Fix choir\n Auto-ray on pulse";
+int* stillfirechoirDescription = "[Hold] Fix choir\nAuto-ray on pulse";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] stillfirechoirCharacters = {{
     "      ",

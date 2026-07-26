@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* splitzigTitle = "SPLITZIG";
-int* splitzigDescription = "[Tap]\n Turn";
+int* splitzigDescription = "[Tap] Turn";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] splitzigCharacters = {{
     "      ",

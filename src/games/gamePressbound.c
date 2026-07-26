@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* pressboundTitle = "PRESSBOUND";
-int* pressboundDescription = "[Hold]\n Narrow\n[Release]\n Release";
+int* pressboundDescription = "[Hold] Narrow\n[Release] Release";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] pressboundCharacters = {{
     "      ",

@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* bmathTitle = "B MATH";
-int* bmathDescription = "[Tap]\n Answer";
+int* bmathDescription = "[Tap] Answer";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] bmathCharacters = {{
     "      ",

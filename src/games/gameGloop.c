@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* gloopTitle = "GLOOP";
-int* gloopDescription = "[Slide]\n Move";
+int* gloopDescription = "[Slide] Move";
 
 int[4][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] gloopCharacters = {
     {

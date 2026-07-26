@@ -1,7 +1,7 @@
 #include "../cglp.h"
 
 int* slashesTitle = "SLASHES";
-int* slashesDescription = "[Tap]\n Turn";
+int* slashesDescription = "[Tap] Turn";
 
 int[1][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] slashesCharacters = {{
     "      ",
