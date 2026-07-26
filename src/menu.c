@@ -59,6 +59,44 @@ void menuUpdate() {
     }
   }
 
+  // LEFT/RIGHT jump a whole page at a time (RIGHT = next page, LEFT =
+  // previous page), wrapping past the last/first page - the page-jump
+  // equivalent of DOWN/UP moving one item at a time. gamesPerPage here
+  // matches MAX_GAMES_PER_PAGE directly rather than the `gamesPerPage`
+  // variable computed below: that variable's own "page == 0" check can
+  // never see a nonzero page (it's evaluated before the loop that would
+  // ever increment page), so gamesPerPage there is always
+  // MAX_GAMES_PER_PAGE in practice - this mirrors that same effective
+  // page size instead of duplicating the walking loop just to derive it.
+  if (input.right.isJustPressed) {
+    int curPage = (gameIndex - 1) / MAX_GAMES_PER_PAGE;
+    int targetIndex = 1 + (curPage + 1) * MAX_GAMES_PER_PAGE;
+    if (targetIndex >= gameCount) {
+      targetIndex = 1; // wrap to the first page
+    }
+    gameIndex = cgl_wrap(targetIndex, 1, gameCount);
+    while (games[gameIndex].update == NULL) {
+      gameIndex++;
+      gameIndex = cgl_wrap(gameIndex, 1, gameCount);
+    }
+  }
+  if (input.left.isJustPressed) {
+    int curPage = (gameIndex - 1) / MAX_GAMES_PER_PAGE;
+    int targetIndex;
+    if (curPage == 0) {
+      int lastGameIndex = gameCount - 1;
+      int lastPage = (lastGameIndex - 1) / MAX_GAMES_PER_PAGE;
+      targetIndex = 1 + lastPage * MAX_GAMES_PER_PAGE; // wrap to the last page
+    } else {
+      targetIndex = 1 + (curPage - 1) * MAX_GAMES_PER_PAGE;
+    }
+    gameIndex = cgl_wrap(targetIndex, 1, gameCount);
+    while (games[gameIndex].update == NULL) {
+      gameIndex++;
+      gameIndex = cgl_wrap(gameIndex, 1, gameCount);
+    }
+  }
+
   // Calculate current page and starting index
   int currentGames = 0;
   int page = 0;

@@ -672,7 +672,7 @@ void main() {
       // skipped if no button happens to be held at that exact moment.
       hasMenuBeenDrawnThisVisit = false;
     }
-    bool anyMenuNavButtonHeld = down || up || b || a;
+    bool anyMenuNavButtonHeld = down || up || left || right || b || a;
     bool menuIsIdleThisFrame = isMenuScreen && hasMenuBeenDrawnThisVisit && !anyMenuNavButtonHeld;
 
     shouldDrawThisFrame = (frameSkipCounter == 0) && !menuIsIdleThisFrame;
