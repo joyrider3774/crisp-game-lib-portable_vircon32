@@ -45,6 +45,15 @@ open the game-selection menu. Vircon32 has no mouse; the handful of
 games that originally used mouse-drag controls move a virtual cursor
 with the d-pad instead (see [PORTING.md](PORTING.md) for details).
 
+## Menu Navigation
+
+- **Up**/**Down** - move the selection one game at a time (wraps around;
+  category headers are skipped)
+- **Left**/**Right** - jump a full page at a time (wraps to the last/first
+  page)
+- **A** - start the highlighted game
+- **B** - also moves the selection down, same as **Down**
+
 ## Building
 
 Get the Vircon32 development tools from
@@ -78,6 +87,15 @@ cut or games graphics to flicker because vircon32 emulator is trying to catch up
 it should however be fine or you can omit playing those games, notable examples are "R Wheel", "Ladder Drop" and "B Blast"
 
 ## History
+
+### V3.0
+
+- Restored every game's title and description to match the original
+  JavaScript sources exactly - these feed directly into the seed used to
+  procedurally generate each game's background music, so
+  titles/descriptions that had drifted from the original text were
+  silently generating the wrong tune
+- Added **Left**/**Right** page navigation to the game-selection menu
 
 ### V2.0
 
