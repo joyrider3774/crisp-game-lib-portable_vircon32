@@ -506,19 +506,19 @@ struct CharacterPattern {
 };
 
 CharacterPattern[MAX_CACHED_CHARACTER_PATTERN_COUNT] characterPatterns;
-// Move-to-front index for the cache below: characterPatternOrder[0..
-// characterPatternsCount) holds indices into characterPatterns, kept
-// reordered by recency of use (see drawCharacter()) so the common case -
-// looking up one of a handful of "hot" glyphs redrawn every frame, like
-// a HUD digit or the current player sprite frame - finds a hit near the
-// front of the scan instead of averaging half of up to 128 entries.
-// This is a layer of indices, not the CharacterPattern entries
-// themselves, specifically because each entry is large (up to 36 rects
-// x 7 ints plus a hitbox - several hundred words) - reordering via
-// int swaps here is cheap; swapping the structs directly would copy
-// all of that on every cache hit, which is the common case, and would
-// cost far more than the scan it's meant to shorten.
-int[MAX_CACHED_CHARACTER_PATTERN_COUNT] characterPatternOrder;
+// Open-addressed hash index into characterPatterns, keyed by the same
+// hash drawCharacter() computes per glyph (index+isText+color+mirror/
+// rotation). Holds pattern indices; -1 marks an empty slot. A linear
+// scan over up to 128 entries used to sit on the hot path of every
+// single character/text draw (menu screens with many distinct on-
+// screen strings - e.g. paging through 260+ game titles - regularly
+// filled most of that cache, making the scan cost scale with how much
+// of the menu you'd already browsed). Table size is prime and well
+// above the entry cap so a lookup always terminates at an empty slot
+// (there are always more free slots than possible occupied ones) - see
+// initCharacter() for the -1 initialization and drawCharacter() for the
+// probe/insert.
+int[CHARACTER_PATTERN_HASH_TABLE_SIZE] characterPatternHashSlots;
 int characterPatternsCount;
 
 #ifdef DEBUG_MODE
@@ -531,8 +531,8 @@ int debugCacheMisses;
 
 void initCharacter() {
   characterPatternsCount = 0;
-  for (int i = 0; i < MAX_CACHED_CHARACTER_PATTERN_COUNT; i++) {
-    characterPatternOrder[i] = i;
+  for (int i = 0; i < CHARACTER_PATTERN_HASH_TABLE_SIZE; i++) {
+    characterPatternHashSlots[i] = -1;
   }
   characterOptions.isMirrorX = characterOptions.isMirrorY = false;
   characterOptions.rotation = 0;
@@ -714,24 +714,20 @@ void drawCharacter(int index, float x, float y, bool _hasCollision, bool isText,
   hash = hash * 37 + characterOptions.isMirrorX;
   hash = hash * 37 + characterOptions.isMirrorY;
   hash = hash * 37 + characterOptions.rotation;
-  CharacterPattern* cp = NULL;
-  int foundSlot = -1;
-  for (int i = 0; i < characterPatternsCount; i++) {
-    if (characterPatterns[characterPatternOrder[i]].hash == hash) {
-      foundSlot = i;
-      break;
+  int slot = hash % CHARACTER_PATTERN_HASH_TABLE_SIZE;
+  if (slot < 0) {
+    slot += CHARACTER_PATTERN_HASH_TABLE_SIZE;
+  }
+  while (characterPatternHashSlots[slot] != -1 &&
+         characterPatterns[characterPatternHashSlots[slot]].hash != hash) {
+    slot++;
+    if (slot >= CHARACTER_PATTERN_HASH_TABLE_SIZE) {
+      slot = 0;
     }
   }
-  if (foundSlot > 0) {
-    // Move-to-front: swaps two indices, never the (large) matched entry
-    // itself - see the comment above characterPatternOrder's declaration.
-    int tmp = characterPatternOrder[0];
-    characterPatternOrder[0] = characterPatternOrder[foundSlot];
-    characterPatternOrder[foundSlot] = tmp;
-    foundSlot = 0;
-  }
-  if (foundSlot >= 0) {
-    cp = &characterPatterns[characterPatternOrder[foundSlot]];
+  CharacterPattern* cp = NULL;
+  if (characterPatternHashSlots[slot] != -1) {
+    cp = &characterPatterns[characterPatternHashSlots[slot]];
 #ifdef DEBUG_MODE
     debugCacheHits++;
 #endif
@@ -747,11 +743,6 @@ void drawCharacter(int index, float x, float y, bool _hasCollision, bool isText,
       }
       return;
     }
-    // characterPatternOrder[characterPatternsCount] already holds this
-    // same value here (identity-initialized in initCharacter(), and
-    // never touched by the swap above since that only ever operates on
-    // indices below the current characterPatternsCount) - no separate
-    // assignment needed to place the new entry into the order layer.
     cp = &characterPatterns[characterPatternsCount];
     cp->hash = hash;
     int[CHARACTER_HEIGHT][CHARACTER_WIDTH][3] colorGrid;
@@ -761,6 +752,7 @@ void drawCharacter(int index, float x, float y, bool _hasCollision, bool isText,
       setColorGrid(currentCharacters[index - 'a'], colorGrid, color, &cp->hitBox);
     }
     cp->rectCount = buildCharRects(colorGrid, cp->rects);
+    characterPatternHashSlots[slot] = characterPatternsCount;
     characterPatternsCount++;
   }
   if (color > TRANSPARENT && x > -CHARACTER_WIDTH && x < viewSizeX &&

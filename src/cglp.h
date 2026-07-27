@@ -76,6 +76,9 @@
 #define MAX_CHARACTER_PATTERN_COUNT 26
 #define ASCII_CHARACTER_COUNT 127
 #define MAX_CACHED_CHARACTER_PATTERN_COUNT 128
+// Prime, and comfortably bigger than MAX_CACHED_CHARACTER_PATTERN_COUNT -
+// see characterPatternHashSlots in cglp.c for why.
+#define CHARACTER_PATTERN_HASH_TABLE_SIZE 509
 
 // PI constants (no "f" literal suffix in this dialect - float is already
 // the only floating type, so plain literals are used everywhere)
