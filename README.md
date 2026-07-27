@@ -88,6 +88,10 @@ it should however be fine or you can omit playing those games, notable examples 
 
 ## History
 
+### V4.0
+
+- Sped up the game-selection menu by replacing its character-cache lookup with a hash table
+
 ### V3.0
 
 - Restored every game's title and description to match the original
