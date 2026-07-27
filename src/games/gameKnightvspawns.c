@@ -1,6 +1,6 @@
 #include "../cglp.h"
 
-int* knightvspawnsTitle = "KNIGHT\n  VS.\nPAWNS";
+int* knightvspawnsTitle = "KNIGHT VS. PAWNS";
 int* knightvspawnsDescription = "[Tap] Move knight";
 
 int[3][CHARACTER_WIDTH][CHARACTER_HEIGHT + 1] knightvspawnsCharacters = {
